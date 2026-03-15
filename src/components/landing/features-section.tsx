@@ -38,7 +38,7 @@ export function FeaturesSection() {
   ];
 
   return (
-    <section ref={sectionRef} className="py-24 px-6 z-10 w-full bg-[#0A0A0F]">
+    <section ref={sectionRef} className="py-24 px-6 z-10 w-full bg-black/40 backdrop-blur-md border-y border-white/5">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-16 items-center">
         <div className="flex-1 text-left">
            <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">
