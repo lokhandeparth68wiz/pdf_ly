@@ -79,30 +79,30 @@ export default function CompressClient() {
         )}
 
         {file && !compressedUrl && (
-          <div className="bg-white dark:bg-neutral-900 rounded-3xl p-6 md:p-8 shadow-sm border border-neutral-200 dark:border-neutral-800 animate-in fade-in slide-in-from-bottom-4">
-            <div className="flex items-center justify-between mb-8 pb-6 border-b border-neutral-100 dark:border-neutral-800">
+          <div className="glass-panel rounded-3xl p-6 md:p-8 shadow-[0_0_40px_-15px_rgba(0,0,0,0.5)] animate-in fade-in slide-in-from-bottom-4">
+            <div className="flex items-center justify-between mb-8 pb-6 border-b border-white/10">
               <div className="flex items-center space-x-4">
-                <div className="p-3 bg-amber-50 dark:bg-amber-500/10 rounded-xl">
-                  <FileArchive className="w-8 h-8 text-amber-500" />
+                <div className="p-3 bg-white/5 rounded-xl border border-white/10">
+                  <FileArchive className="w-8 h-8 text-amber-400" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-neutral-900 dark:text-white truncate max-w-sm">
+                  <h3 className="text-xl font-semibold text-white truncate max-w-sm">
                     {file.name}
                   </h3>
-                  <p className="text-neutral-500">{formatSize(file.size)} MB</p>
+                  <p className="text-neutral-400">{formatSize(file.size)} MB</p>
                 </div>
               </div>
               <button 
                 onClick={() => setFile(null)}
-                className="text-sm font-medium text-neutral-500 hover:text-neutral-900 dark:hover:text-white"
+                className="text-sm font-medium text-neutral-400 hover:text-white transition-colors"
               >
                 Choose different file
               </button>
             </div>
 
             <div className="mb-8">
-              <h4 className="text-lg font-medium mb-4 flex items-center">
-                <Settings2 className="w-5 h-5 mr-2 text-neutral-500" />
+              <h4 className="text-lg font-medium mb-4 flex items-center text-white">
+                <Settings2 className="w-5 h-5 mr-2 text-neutral-400" />
                 Compression Level
               </h4>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -116,14 +116,14 @@ export default function CompressClient() {
                     onClick={() => setLevel(opt.id as any)}
                     className={`flex flex-col items-start p-4 rounded-xl border-2 transition-all ${
                       level === opt.id 
-                        ? "border-amber-500 bg-amber-50 dark:bg-amber-500/10" 
-                        : "border-neutral-200 dark:border-neutral-700 hover:border-amber-300 dark:hover:border-amber-700"
+                        ? "border-amber-500 bg-amber-500/10" 
+                        : "border-white/10 hover:border-amber-500/50 bg-white/5"
                     }`}
                   >
-                    <span className={`font-semibold ${level === opt.id ? "text-amber-700 dark:text-amber-400" : "text-neutral-900 dark:text-white"}`}>
+                    <span className={`font-semibold ${level === opt.id ? "text-amber-400" : "text-white"}`}>
                       {opt.label}
                     </span>
-                    <span className="text-sm text-left text-neutral-500 mt-1">
+                    <span className="text-sm text-left text-neutral-400 mt-1">
                       {opt.desc}
                     </span>
                   </button>
@@ -151,14 +151,14 @@ export default function CompressClient() {
         )}
 
         {compressedUrl && savings && (
-          <div className="bg-white dark:bg-neutral-900 rounded-3xl p-8 text-center shadow-sm border border-neutral-200 dark:border-neutral-800 animate-in zoom-in-95">
-             <div className="inline-flex items-center justify-center w-20 h-20 bg-green-100 dark:bg-green-900/30 rounded-full mb-6">
-                <span className="text-3xl font-bold text-green-600 dark:text-green-400">-{savingsPercent}%</span>
+          <div className="glass-panel rounded-3xl p-8 text-center shadow-[0_0_40px_-15px_rgba(0,0,0,0.5)] animate-in zoom-in-95">
+             <div className="inline-flex items-center justify-center w-20 h-20 bg-green-500/10 border border-green-500/20 rounded-full mb-6">
+                <span className="text-3xl font-bold text-green-400">-{savingsPercent}%</span>
              </div>
-             <h2 className="text-2xl font-bold text-neutral-900 dark:text-white mb-2">
+             <h2 className="text-2xl font-bold text-white mb-2">
                PDF Compressed Successfully!
              </h2>
-             <p className="text-neutral-600 dark:text-neutral-400 mb-8 max-w-md mx-auto">
+             <p className="text-neutral-400 mb-8 max-w-md mx-auto">
                Your file is now {formatSize(savings.new)} MB, down from {formatSize(savings.original)} MB.
              </p>
              
