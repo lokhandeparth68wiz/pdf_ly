@@ -40,15 +40,6 @@ export function HeroSection() {
           animate="visible"
           className="flex flex-col items-center"
         >
-          <motion.div variants={itemVariants} className="mb-8">
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-purple-500/30 bg-purple-500/10 text-purple-300 text-sm font-medium backdrop-blur-md">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-purple-500"></span>
-              </span>
-              PDFly 2.0 is now live
-            </span>
-          </motion.div>
 
           <motion.h1 
             variants={itemVariants}
