@@ -107,7 +107,7 @@ export function HeroSection() {
               </div>
             </div>
             
-            <div className="absolute -inset-0.5 bg-linear-to-tr from-red-500/20 via-transparent to-brand-primary/20 rounded-2xl z-[-1] blur-md mix-blend-screen" />
+            <div className="absolute -inset-0.5 bg-linear-to-tr from-red-500/20 via-transparent to-brand-primary/20 rounded-2xl z-[-1] blur-sm opacity-50" />
         </div>
       </motion.div>
     </section>

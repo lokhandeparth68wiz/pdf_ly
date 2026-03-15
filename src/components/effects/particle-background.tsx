@@ -27,11 +27,11 @@ export function ParticleBackground() {
       powerPreference: "high-performance",
     });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Cap pixel ratio for performance
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.25)); // Lower cap for much better performance
     mountRef.current.appendChild(renderer.domElement);
 
     // Particles setup
-    const particleCount = 2000;
+    const particleCount = 800; // Reduced from 2000 for smooth 60fps
     const geometry = new THREE.BufferGeometry();
     const positions = new Float32Array(particleCount * 3);
     const colors = new Float32Array(particleCount * 3);

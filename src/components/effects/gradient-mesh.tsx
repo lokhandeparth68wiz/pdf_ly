@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export function GradientMesh() {
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none z-0 opacity-40 mix-blend-screen">
+    <div className="absolute inset-0 overflow-hidden pointer-events-none z-0 opacity-20">
       {/* Primary Purple Orb */}
       <motion.div
         animate={{
