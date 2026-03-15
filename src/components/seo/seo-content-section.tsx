@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export function SeoContentSection() {
   return (
-    <section className="w-full bg-[#08080C] py-24 px-6 border-t border-white/5 relative z-10">
+    <section className="w-full bg-black/40 backdrop-blur-md py-24 px-6 border-y border-white/5 relative z-10">
       <div className="max-w-4xl mx-auto prose prose-invert prose-p:text-neutral-400 prose-headings:font-display prose-a:text-brand-primary hover:prose-a:text-red-400">
         <h2 className="text-4xl font-bold mb-6 text-white text-center">Best Free PDF Tools Online</h2>
         <p className="text-lg leading-relaxed text-center max-w-3xl mx-auto mb-16">
