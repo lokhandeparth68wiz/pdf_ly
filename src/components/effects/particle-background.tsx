@@ -37,9 +37,9 @@ export function ParticleBackground() {
     const colors = new Float32Array(particleCount * 3);
     const sizes = new Float32Array(particleCount);
 
-    const color1 = new THREE.Color("#4c1d95"); // Deep purple
-    const color2 = new THREE.Color("#8b5cf6"); // Violet
-    const color3 = new THREE.Color("#3b82f6"); // Blue
+    const color1 = new THREE.Color("#df2531"); // Mokoto Red
+    const color2 = new THREE.Color("#991b22"); // Darker Crimson
+    const color3 = new THREE.Color("#ffffff"); // White
 
     for (let i = 0; i < particleCount; i++) {
       // Spread particles in a wide volume

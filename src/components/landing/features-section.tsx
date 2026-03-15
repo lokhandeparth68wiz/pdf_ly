@@ -56,8 +56,8 @@ export function FeaturesSection() {
               ref={el => { listRef.current[idx] = el; }}
               className="flex items-start gap-4 group"
             >
-              <div className="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center shrink-0 group-hover:bg-purple-500/20 transition-colors">
-                 <feat.icon className="w-6 h-6 text-purple-400" />
+              <div className="w-12 h-12 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center shrink-0 group-hover:bg-red-500/20 transition-colors">
+                 <feat.icon className="w-6 h-6 text-red-500" />
               </div>
               <div>
                 <h4 className="text-xl font-bold text-white mb-2">{feat.title}</h4>

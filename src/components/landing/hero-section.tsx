@@ -58,8 +58,8 @@ export function HeroSection() {
           </motion.p>
 
           <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-center gap-4 mb-20">
-            <Link href="#tools" className="relative group px-8 py-4 rounded-full font-medium text-white shadow-[0_0_40px_-10px_rgba(139,92,246,0.5)] hover:shadow-[0_0_60px_-15px_rgba(139,92,246,0.7)] transition-all duration-300 hover:scale-105 flex items-center gap-2">
-              <div className="absolute inset-0 rounded-full bg-linear-to-r from-purple-600 to-blue-600 opacity-90 group-hover:opacity-100 transition-opacity" />
+            <Link href="#tools" className="relative group px-8 py-4 rounded-full font-medium text-white shadow-[0_0_40px_-10px_rgba(223,37,49,0.5)] hover:shadow-[0_0_60px_-15px_rgba(223,37,49,0.7)] transition-all duration-300 hover:scale-105 flex items-center gap-2">
+              <div className="absolute inset-0 rounded-full bg-linear-to-r from-brand-primary to-red-600 opacity-90 group-hover:opacity-100 transition-opacity" />
               <span className="relative z-10">Start Using PDFly</span>
               <ArrowRight className="w-4 h-4 relative z-10 group-hover:translate-x-1 transition-transform" />
             </Link>
@@ -80,11 +80,11 @@ export function HeroSection() {
         style={{ perspective: 1000 }}
         className="w-full max-w-5xl z-10 mx-auto px-4"
       >
-        <div className="relative w-full aspect-[16/9] rounded-2xl overflow-hidden glass-card border border-white/10 shadow-2xl shadow-purple-500/10 flex items-center justify-center">
+        <div className="relative w-full aspect-video rounded-2xl overflow-hidden glass-card border border-white/10 shadow-2xl shadow-red-500/10 flex items-center justify-center">
             {/* Mock Dashboard UI inside the glass card */}
             <div className="absolute inset-0 bg-linear-to-b from-white/5 to-transparent pointer-events-none" />
             
-            <div className="w-4/5 h-4/5 rounded-xl border border-white/5 bg-[#0a0a0f]/80 flex flex-col overflow-hidden shadow-2xl">
+            <div className="w-4/5 h-4/5 rounded-xl border border-white/5 bg-brand-dark/80 flex flex-col overflow-hidden shadow-2xl">
               {/* Fake App header */}
               <div className="h-12 border-b border-white/5 flex items-center px-4 gap-2">
                  <div className="w-3 h-3 rounded-full bg-red-500/50" />
@@ -101,13 +101,13 @@ export function HeroSection() {
                    </div>
                 </div>
                 <div className="flex-1 flex flex-col gap-4">
-                   <div className="h-24 w-full rounded-lg bg-purple-500/10 border border-purple-500/20" />
-                   <div className="h-24 w-full rounded-lg bg-blue-500/10 border border-blue-500/20" />
+                   <div className="h-24 w-full rounded-lg bg-red-500/10 border border-red-500/20" />
+                   <div className="h-24 w-full rounded-lg bg-brand-primary/10 border border-brand-primary/20" />
                 </div>
               </div>
             </div>
             
-            <div className="absolute -inset-0.5 bg-linear-to-tr from-purple-500/20 via-transparent to-blue-500/20 rounded-2xl z-[-1] blur-md mix-blend-screen" />
+            <div className="absolute -inset-0.5 bg-linear-to-tr from-red-500/20 via-transparent to-brand-primary/20 rounded-2xl z-[-1] blur-md mix-blend-screen" />
         </div>
       </motion.div>
     </section>

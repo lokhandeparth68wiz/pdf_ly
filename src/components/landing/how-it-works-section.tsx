@@ -45,17 +45,17 @@ export function HowItWorksSection() {
     {
       title: "Upload File",
       description: "Drag & drop your PDF directly into the browser.",
-      icon: <Upload className="w-8 h-8 text-purple-400" />
+      icon: <Upload className="w-8 h-8 text-red-500" />
     },
     {
       title: "Choose Tool",
       description: "Select merge, compress, edit, or convert options.",
-      icon: <Settings2 className="w-8 h-8 text-blue-400" />
+      icon: <Settings2 className="w-8 h-8 text-brand-primary" />
     },
     {
       title: "Download Instantly",
       description: "Get your processed file in seconds securely.",
-      icon: <DownloadCloud className="w-8 h-8 text-emerald-400" />
+      icon: <DownloadCloud className="w-8 h-8 text-rose-500" />
     }
   ];
 
@@ -79,7 +79,7 @@ export function HowItWorksSection() {
                   {step.icon}
                   
                   {/* Step number badge */}
-                  <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-purple-600 text-white font-bold flex items-center justify-center border-4 border-[#0A0A0F]">
+                  <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-brand-primary text-white font-bold flex items-center justify-center border-4 border-[#0A0A0F]">
                     {idx + 1}
                   </div>
                 </div>
@@ -92,7 +92,7 @@ export function HowItWorksSection() {
               {idx < steps.length - 1 && (
                 <div 
                   ref={el => { linesRef.current[idx] = el; }}
-                  className="hidden md:block absolute top-[48px] left-[60%] w-[80%] h-[2px] bg-linear-to-r from-purple-500/50 to-blue-500/50 -z-10" 
+                  className="hidden md:block absolute top-[48px] left-[60%] w-[80%] h-[2px] bg-linear-to-r from-red-500/50 to-brand-primary/50 -z-10" 
                 >
                   {/* Moving dot on line */}
                   <div className="w-full h-full relative overflow-hidden">

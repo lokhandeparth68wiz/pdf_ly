@@ -19,7 +19,7 @@ export function GradientMesh() {
         }}
         className="absolute top-1/4 left-1/4 w-[40vw] h-[40vw] rounded-full"
         style={{
-          background: "radial-gradient(circle, rgba(139, 92, 246, 0.8) 0%, rgba(139, 92, 246, 0) 70%)",
+          background: "radial-gradient(circle, rgba(223, 37, 49, 0.8) 0%, rgba(223, 37, 49, 0) 70%)",
           filter: "blur(60px)",
         }}
       />
@@ -38,7 +38,7 @@ export function GradientMesh() {
         }}
         className="absolute top-1/3 right-1/4 w-[35vw] h-[35vw] rounded-full"
         style={{
-          background: "radial-gradient(circle, rgba(59, 130, 246, 0.6) 0%, rgba(59, 130, 246, 0) 70%)",
+          background: "radial-gradient(circle, rgba(153, 27, 34, 0.6) 0%, rgba(153, 27, 34, 0) 70%)",
           filter: "blur(60px)",
         }}
       />
@@ -57,7 +57,7 @@ export function GradientMesh() {
         }}
         className="absolute -bottom-1/4 left-1/3 w-[45vw] h-[45vw] rounded-full"
         style={{
-          background: "radial-gradient(circle, rgba(79, 70, 229, 0.5) 0%, rgba(79, 70, 229, 0) 70%)",
+          background: "radial-gradient(circle, rgba(255, 77, 77, 0.3) 0%, rgba(255, 77, 77, 0) 70%)",
           filter: "blur(80px)",
         }}
       />

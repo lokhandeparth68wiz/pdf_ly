@@ -60,12 +60,11 @@ body {
   background-clip: text;
 }
 
-/* NovaMind AI SaaS Custom Styles */
 @theme inline {
-  --color-brand-primary: #8b5cf6;
-  --color-brand-secondary: #3b82f6;
-  --color-brand-dark: #0a0a0f;
-  --color-brand-card: #12121a;
+  --color-brand-primary: #df2531;
+  --color-brand-secondary: #ff4d4d;
+  --color-brand-dark: #000000;
+  --color-brand-card: #0a0a0a;
   
   --font-display: var(--font-space-grotesk);
 }
@@ -102,10 +101,10 @@ body {
 
 @keyframes pulse-glow {
   0%, 100% {
-    box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
+    box-shadow: 0 0 15px rgba(223, 37, 49, 0.3);
   }
   50% {
-    box-shadow: 0 0 40px rgba(139, 92, 246, 0.6);
+    box-shadow: 0 0 40px rgba(223, 37, 49, 0.6);
   }
 }
 
@@ -137,8 +136,8 @@ body {
     from var(--gradient-angle),
     transparent 0%,
     transparent 60%,
-    rgba(139, 92, 246, 1) 80%,
-    rgba(59, 130, 246, 1) 100%
+    rgba(223, 37, 49, 1) 80%,
+    rgba(255, 77, 77, 1) 100%
   );
   border-radius: inherit;
   animation: rotation 4s linear infinite;
@@ -158,7 +157,7 @@ body {
 }
 
 .text-gradient-purple {
-  background: linear-gradient(135deg, #ffffff 0%, #a78bfa 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #df2531 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

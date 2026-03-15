@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 export function SocialProofSection() {
   return (
     <section className="py-24 px-6 z-10 w-full flex items-center justify-center overflow-hidden relative">
-      <div className="absolute inset-0 bg-linear-to-b from-transparent via-purple-900/10 to-transparent pointer-events-none" />
+      <div className="absolute inset-0 bg-linear-to-b from-transparent via-red-900/10 to-transparent pointer-events-none" />
       
       <div className="max-w-4xl mx-auto text-center z-10">
         <motion.div
@@ -15,7 +15,7 @@ export function SocialProofSection() {
            transition={{ duration: 0.8 }}
         >
           <p className="text-xl md:text-3xl font-display font-medium text-white mb-10 leading-relaxed">
-            "Trusted by <span className="text-purple-400 font-bold">12,500+ professionals</span> worldwide to securely handle millions of sensitive documents every single day."
+            "Trusted by <span className="text-red-500 font-bold">12,500+ professionals</span> worldwide to securely handle millions of sensitive documents every single day."
           </p>
           
           <div className="flex items-center justify-center gap-2">
@@ -23,7 +23,7 @@ export function SocialProofSection() {
                {[1,2,3,4,5].map(i => (
                  <div key={i} className="w-12 h-12 rounded-full border-2 border-[#0A0A0F] bg-neutral-800 flex items-center justify-center overflow-hidden">
                     {/* Dummy avatar gradient source */}
-                    <div className={`w-full h-full bg-linear-to-br from-purple-${i}00 to-blue-${i}00 opacity-50`} />
+                    <div className={`w-full h-full bg-linear-to-br from-red-${i}00 to-rose-${i}00 opacity-50`} />
                  </div>
                ))}
             </div>
