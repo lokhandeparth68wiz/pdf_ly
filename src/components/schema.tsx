@@ -1,4 +1,4 @@
-export function JSONLDSchema({ type, data }: { type: string; data: any }) {
+export function JSONLDSchema({ type, data }: { type: string; data: Record<string, unknown> }) {
   const schemaData = {
     "@context": "https://schema.org",
     "@type": type,

@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Exclude the Express backend (separate CommonJS project)
+    "express-backend/**",
   ]),
 ]);
 

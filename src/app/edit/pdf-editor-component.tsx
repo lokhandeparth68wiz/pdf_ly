@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { FileEdit, Download, Type, PenTool, X, Trash2, Undo2 } from "lucide-react";
+import { Download, Type, PenTool, X, Undo2 } from "lucide-react";
 import { FileDropzone } from "@/components/file-dropzone";
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
@@ -29,7 +29,7 @@ export default function PdfEditorClient() {
   const [fileUrl, setFileUrl] = useState<string | null>(null);
   const [numPages, setNumPages] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [renderScale, setRenderScale] = useState<number>(1);
+  const [renderScale] = useState<number>(1);
   
   const [tool, setTool] = useState<"text" | "draw" | null>(null);
   const [annotations, setAnnotations] = useState<Annotation[]>([]);
@@ -99,7 +99,7 @@ export default function PdfEditorClient() {
       for (const ann of annotations) {
         if (ann.pageIndex >= pages.length) continue;
         const page = pages[ann.pageIndex];
-        const { width, height } = page.getSize();
+        const { height } = page.getSize();
 
         // Very basic coordinate mapping (assuming 1:1 scale for simplicity here)
         // PDF coordinates start from bottom-left. We might need to invert Y.
@@ -131,7 +131,7 @@ export default function PdfEditorClient() {
       }
 
       const pdfBytes = await pdfDoc.save();
-      const blob = new Blob([pdfBytes as any], { type: "application/pdf" });
+      const blob = new Blob([pdfBytes as BlobPart], { type: "application/pdf" });
       const url = URL.createObjectURL(blob);
       
       const a = document.createElement("a");
@@ -248,10 +248,8 @@ export default function PdfEditorClient() {
                           left: ann.x,
                           top: ann.y,
                         }}
-                        onDragEnd={(e) => {
+                        onDragEnd={() => {
                           // Very basic drag implementation stub
-                          const target = e.target as HTMLElement;
-                          const dx = e.clientX - target.getBoundingClientRect().left;
                         }}
                       >
                          <button 
@@ -266,6 +264,7 @@ export default function PdfEditorClient() {
                           </div>
                         )}
                         {ann.type === "signature" && ann.dataUrl && (
+                          // eslint-disable-next-line @next/next/no-img-element
                           <img src={ann.dataUrl} alt="Signature" className="h-16 object-contain border border-transparent group-hover:border-blue-500 bg-white/50 rounded" />
                         )}
                       </div>

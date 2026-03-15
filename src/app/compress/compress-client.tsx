@@ -44,9 +44,9 @@ export default function CompressClient() {
         original: file.size,
         new: blob.size,
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Compression error:", error);
-      alert(error.message || "An error occurred during compression. Ghostscript may not be installed on the server.");
+      alert(error instanceof Error ? error.message : "An error occurred during compression. Ghostscript may not be installed on the server.");
     } finally {
       setIsCompressing(false);
     }
@@ -113,7 +113,7 @@ export default function CompressClient() {
                 ].map((opt) => (
                   <button
                     key={opt.id}
-                    onClick={() => setLevel(opt.id as any)}
+                    onClick={() => setLevel(opt.id as "screen" | "ebook" | "printer")}
                     className={`flex flex-col items-start p-4 rounded-xl border-2 transition-all ${
                       level === opt.id 
                         ? "border-amber-500 bg-amber-500/10" 

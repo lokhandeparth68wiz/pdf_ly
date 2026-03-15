@@ -36,9 +36,9 @@ export default function PdfToDocxClient() {
       const blob = await response.blob();
       const url = URL.createObjectURL(blob);
       setConvertedUrl(url);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Conversion error:", error);
-      alert(error.message || "An error occurred during conversion. LibreOffice may not be installed on the server.");
+      alert(error instanceof Error ? error.message : "An error occurred during conversion. LibreOffice may not be installed on the server.");
     } finally {
       setIsConverting(false);
     }
