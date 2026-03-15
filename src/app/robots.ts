@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/api/'],
     },
-    sitemap: 'https://pdfly.com/sitemap.xml',
+    sitemap: 'https://pdf-ly.vercel.app/sitemap.xml',
   };
 }

@@ -3,6 +3,7 @@ import { FileEdit, FileArchive, CopyPlus, FileText, FileType2 } from "lucide-rea
 import { ParticleBackground } from "@/components/effects/particle-background";
 import { GradientMesh } from "@/components/effects/gradient-mesh";
 import { NoiseTexture } from "@/components/effects/noise-texture";
+import { StructuredData, generateSoftwareSchema } from "@/components/seo/structured-data";
 
 import { HeroSection } from "@/components/landing/hero-section";
 import { ToolsSection } from "@/components/landing/tools-section";
@@ -11,11 +12,12 @@ import { FeaturesSection } from "@/components/landing/features-section";
 import { SocialProofSection } from "@/components/landing/social-proof-section";
 import { CtaSection } from "@/components/landing/cta-section";
 import { Footer } from "@/components/landing/footer";
+import { SeoContentSection } from "@/components/seo/seo-content-section";
 
 export default function Home() {
   return (
-    <div className="relative w-full min-h-screen bg-[#000000] text-white flex flex-col font-sans overflow-x-hidden selection:bg-purple-500/30 selection:text-white">
-      
+    <div className="relative w-full min-h-screen bg-brand-dark text-white flex flex-col font-sans overflow-x-hidden selection:bg-purple-500/30 selection:text-white">
+      <StructuredData data={generateSoftwareSchema()} />
       {/* 
         ========================================
         GLOBAL CINEMATIC EFFECTS 
@@ -43,6 +45,9 @@ export default function Home() {
         <div className="scale-105 origin-top relative mt-20"> 
           <CtaSection />
         </div>
+        
+        {/* SEO Long-form Keyword Content */}
+        <SeoContentSection />
       </main>
 
       {/* Footer */}
