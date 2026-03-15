@@ -3,7 +3,6 @@
 import { motion, Variants } from "framer-motion";
 import { ArrowRight, PlayCircle } from "lucide-react";
 import Link from "next/link";
-import Image from "next/image";
 
 export function HeroSection() {
   const containerVariants: Variants = {

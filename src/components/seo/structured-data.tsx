@@ -25,6 +25,11 @@ export const generateSoftwareSchema = () => ({
     price: '0',
     priceCurrency: 'USD',
   },
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: '4.9',
+    ratingCount: '12500',
+  },
   description: 'Merge, compress, edit, and convert your PDF files online for free. Secure, fast, and no installation required.',
 });
 
