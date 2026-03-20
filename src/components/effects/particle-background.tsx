@@ -3,7 +3,13 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
-export function ParticleBackground() {
+export function ParticleBackground({ 
+  baseColor = "#df2531", 
+  secondaryColor = "#991b22" 
+}: { 
+  baseColor?: string;
+  secondaryColor?: string;
+} = {}) {
   const mountRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -37,8 +43,8 @@ export function ParticleBackground() {
     const colors = new Float32Array(particleCount * 3);
     const sizes = new Float32Array(particleCount);
 
-    const color1 = new THREE.Color("#df2531"); // Mokoto Red
-    const color2 = new THREE.Color("#991b22"); // Darker Crimson
+    const color1 = new THREE.Color(baseColor);
+    const color2 = new THREE.Color(secondaryColor);
     const color3 = new THREE.Color("#ffffff"); // White
 
     for (let i = 0; i < particleCount; i++) {

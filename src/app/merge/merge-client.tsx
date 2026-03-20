@@ -97,15 +97,15 @@ export default function MergeClient() {
   return (
     <div className="container mx-auto px-4 py-12 max-w-4xl">
       <div className="text-center mb-10">
-        <div className="flex justify-center mb-4">
-          <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-2xl">
-            <CopyPlus className="w-10 h-10 text-blue-600 dark:text-blue-400" />
+        <div className="flex justify-center mb-4 relative z-20">
+          <div className="p-4 rounded-2xl glass-card border border-blue-500/30 shadow-[0_0_20px_rgba(59,130,246,0.3)]">
+            <CopyPlus className="w-10 h-10 text-blue-400" />
           </div>
         </div>
-        <h1 className="text-3xl md:text-4xl font-bold text-neutral-900 dark:text-white mb-4">
+        <h1 className="text-3xl md:text-4xl font-display font-bold text-white mb-4 drop-shadow-lg">
           Merge PDF Files
         </h1>
-        <p className="text-lg text-neutral-600 dark:text-neutral-400">
+        <p className="text-lg text-neutral-300 max-w-2xl mx-auto drop-shadow">
           Combine PDFs in the order you want with the easiest PDF merger available.
         </p>
       </div>
@@ -114,10 +114,10 @@ export default function MergeClient() {
         <FileDropzone onFilesDropped={handleFilesDropped} multiple={true} />
 
         {files.length > 0 && (
-          <div className="bg-white dark:bg-neutral-900 rounded-3xl p-6 md:p-8 shadow-sm border border-neutral-200 dark:border-neutral-800">
-            <h2 className="text-xl font-semibold mb-6 flex items-center justify-between">
-              <span>Selected Files ({files.length})</span>
-              <span className="text-sm font-normal text-neutral-500">Drag to reorder</span>
+          <div className="glass-card bg-black/40 rounded-3xl p-6 md:p-8 border border-white/10 relative z-20">
+            <h2 className="text-xl font-semibold mb-6 flex items-center justify-between text-white drop-shadow-md">
+              <span>Selected Files <span className="text-blue-400">({files.length})</span></span>
+              <span className="text-sm font-normal text-neutral-400">Drag to reorder</span>
             </h2>
 
             <DndContext
@@ -134,12 +134,12 @@ export default function MergeClient() {
               </SortableContext>
             </DndContext>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-end border-t border-neutral-100 dark:border-neutral-800 pt-6">
+            <div className="flex flex-col sm:flex-row gap-4 justify-end border-t border-white/10 pt-6">
               {mergedPdfUrl && (
                 <a
                   href={mergedPdfUrl}
                   download="merged_document.pdf"
-                  className="flex items-center justify-center px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-xl shadow-sm transition-colors"
+                  className="flex items-center justify-center px-6 py-3 bg-emerald-600/90 hover:bg-emerald-500 text-white font-medium rounded-xl shadow-[0_0_15px_rgba(16,185,129,0.3)] transition-colors border border-emerald-400/30"
                 >
                   <Download className="w-5 h-5 mr-2" />
                   Download Merged PDF
@@ -148,7 +148,7 @@ export default function MergeClient() {
               <button
                 onClick={handleMerge}
                 disabled={files.length < 2 || isMerging}
-                className="flex items-center justify-center px-8 py-3 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium rounded-xl shadow-sm transition-colors"
+                className="flex items-center justify-center px-8 py-3 bg-blue-600/90 hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium rounded-xl shadow-[0_0_15px_rgba(59,130,246,0.3)] transition-colors border border-blue-400/30"
               >
                 {isMerging ? (
                   <>
