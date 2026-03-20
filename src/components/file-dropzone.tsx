@@ -8,12 +8,14 @@ interface FileDropzoneProps {
   onFilesDropped: (files: File[]) => void;
   accept?: Record<string, string[]>;
   multiple?: boolean;
+  theme?: "blue" | "amber";
 }
 
 export function FileDropzone({
   onFilesDropped,
   accept = { "application/pdf": [".pdf"] },
   multiple = true,
+  theme = "blue",
 }: FileDropzoneProps) {
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
@@ -30,6 +32,25 @@ export function FileDropzone({
     multiple,
   });
 
+  const themeColors = {
+    blue: {
+      activeBorder: "border-blue-500",
+      activeBg: "bg-blue-500/10",
+      icon: "text-blue-400",
+      btnBg: "bg-blue-600 hover:bg-blue-500",
+      btnBorder: "border-blue-400/30",
+    },
+    amber: {
+      activeBorder: "border-amber-500",
+      activeBg: "bg-amber-500/10",
+      icon: "text-amber-400",
+      btnBg: "bg-amber-600 hover:bg-amber-500",
+      btnBorder: "border-amber-400/30",
+    }
+  };
+
+  const colors = themeColors[theme];
+
   return (
     <div
       {...getRootProps()}
@@ -37,7 +58,7 @@ export function FileDropzone({
         glass-card
         ${
           isDragActive
-            ? "border-blue-500 bg-blue-500/10 scale-[1.02]"
+            ? `${colors.activeBorder} ${colors.activeBg} scale-[1.02]`
             : "border-white/10 hover:border-white/20 hover:scale-[1.01]"
         }
       `}
@@ -45,7 +66,7 @@ export function FileDropzone({
       <input {...getInputProps()} />
       <div className="flex flex-col items-center justify-center space-y-4 relative z-10">
         <div className="p-4 rounded-full shadow-lg glass-card border border-white/20">
-          <UploadCloud className="w-10 h-10 text-blue-400" />
+          <UploadCloud className={`w-10 h-10 ${colors.icon}`} />
         </div>
         <h3 className="text-xl font-semibold text-white">
           {isDragActive ? "Drop files here" : "Choose files or drag & drop"}
@@ -55,7 +76,7 @@ export function FileDropzone({
         </p>
         <button 
           type="button" 
-          className="mt-4 px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-medium rounded-full shadow-lg transition-colors border border-blue-400/30"
+          className={`mt-4 px-6 py-3 ${colors.btnBg} text-white font-medium rounded-full shadow-lg transition-colors border ${colors.btnBorder}`}
         >
           Select Files
         </button>

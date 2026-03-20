@@ -60,29 +60,29 @@ export default function CompressClient() {
   return (
     <div className="container mx-auto px-4 py-12 max-w-4xl">
       <div className="text-center mb-10">
-        <div className="flex justify-center mb-4">
-          <div className="p-3 bg-amber-100 dark:bg-amber-900/30 rounded-2xl">
-            <FileArchive className="w-10 h-10 text-amber-600 dark:text-amber-400" />
+        <div className="flex justify-center mb-4 relative z-20">
+          <div className="p-4 rounded-2xl glass-card border border-amber-500/30 shadow-[0_0_20px_rgba(245,158,11,0.3)]">
+            <FileArchive className="w-10 h-10 text-amber-400" />
           </div>
         </div>
-        <h1 className="text-3xl md:text-4xl font-bold text-neutral-900 dark:text-white mb-4">
+        <h1 className="text-3xl md:text-4xl font-display font-bold text-white mb-4 drop-shadow-lg">
           Compress PDF
         </h1>
-        <p className="text-lg text-neutral-600 dark:text-neutral-400">
+        <p className="text-lg text-neutral-300 max-w-2xl mx-auto drop-shadow">
           Reduce your PDF file size while keeping the highest possible quality.
         </p>
       </div>
 
       <div className="space-y-8">
         {!file && (
-          <FileDropzone onFilesDropped={handleFilesDropped} multiple={false} />
+          <FileDropzone onFilesDropped={handleFilesDropped} multiple={false} theme="amber" />
         )}
 
         {file && !compressedUrl && (
-          <div className="glass-panel rounded-3xl p-6 md:p-8 shadow-[0_0_40px_-15px_rgba(0,0,0,0.5)] animate-in fade-in slide-in-from-bottom-4">
+          <div className="glass-card bg-black/40 rounded-3xl p-6 md:p-8 animate-in fade-in slide-in-from-bottom-4 border border-white/10 relative z-20">
             <div className="flex items-center justify-between mb-8 pb-6 border-b border-white/10">
               <div className="flex items-center space-x-4">
-                <div className="p-3 bg-white/5 rounded-xl border border-white/10">
+                <div className="p-3 bg-white/5 rounded-xl border border-white/10 glass-card">
                   <FileArchive className="w-8 h-8 text-amber-400" />
                 </div>
                 <div>
@@ -131,11 +131,11 @@ export default function CompressClient() {
               </div>
             </div>
 
-            <div className="flex justify-end">
+            <div className="flex justify-end mt-4">
               <button
                 onClick={handleCompress}
                 disabled={isCompressing}
-                className="flex items-center justify-center px-8 py-3 bg-amber-500 hover:bg-amber-600 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium rounded-xl shadow-sm transition-colors w-full md:w-auto"
+                className="flex items-center justify-center px-8 py-3 bg-amber-600/90 hover:bg-amber-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium rounded-xl shadow-[0_0_15px_rgba(245,158,11,0.3)] transition-colors border border-amber-400/30 w-full md:w-auto"
               >
                 {isCompressing ? (
                   <>
@@ -151,8 +151,8 @@ export default function CompressClient() {
         )}
 
         {compressedUrl && savings && (
-          <div className="glass-panel rounded-3xl p-8 text-center shadow-[0_0_40px_-15px_rgba(0,0,0,0.5)] animate-in zoom-in-95">
-             <div className="inline-flex items-center justify-center w-20 h-20 bg-green-500/10 border border-green-500/20 rounded-full mb-6">
+          <div className="glass-card bg-black/40 rounded-3xl p-8 text-center animate-in zoom-in-95 border border-white/10 relative z-20">
+             <div className="inline-flex items-center justify-center w-20 h-20 bg-green-500/10 border border-green-500/20 shadow-[0_0_20px_rgba(34,197,94,0.2)] rounded-full mb-6 glass-card">
                 <span className="text-3xl font-bold text-green-400">-{savingsPercent}%</span>
              </div>
              <h2 className="text-2xl font-bold text-white mb-2">
@@ -169,14 +169,14 @@ export default function CompressClient() {
                     setCompressedUrl(null);
                     setSavings(null);
                   }}
-                  className="px-6 py-3 font-medium text-neutral-600 bg-neutral-100 dark:text-neutral-300 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-xl transition-colors w-full sm:w-auto"
+                  className="px-6 py-3 font-medium text-white/70 bg-white/5 border border-white/10 hover:bg-white/10 hover:text-white rounded-xl transition-colors w-full sm:w-auto glass-card"
                 >
                   Compress another file
                 </button>
                 <a
                   href={compressedUrl}
                   download={`compressed-${file!.name}`}
-                  className="flex items-center justify-center px-8 py-3 bg-amber-500 hover:bg-amber-600 text-white font-medium rounded-xl shadow-sm transition-colors w-full sm:w-auto"
+                  className="flex items-center justify-center px-8 py-3 bg-amber-600/90 hover:bg-amber-500 text-white font-medium rounded-xl shadow-[0_0_15px_rgba(245,158,11,0.3)] transition-colors border border-amber-400/30 w-full sm:w-auto"
                 >
                   <Download className="w-5 h-5 mr-2" />
                   Download Compressed PDF

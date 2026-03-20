@@ -1,6 +1,7 @@
 import { constructMetadata } from "@/lib/seo";
 import { JSONLDSchema } from "@/components/schema";
 import CompressClient from "./compress-client";
+import { ParticleBackground } from "@/components/effects/particle-background";
 
 export const metadata = constructMetadata({
   title: "Compress PDF Online | Reduce PDF File Size Free - PDFly",
@@ -24,7 +25,12 @@ export default function CompressPage() {
           description: "Free online tool to significantly reduce PDF file size while maintaining maximum quality.",
         }}
       />
-      <CompressClient />
+      <div className="relative min-h-[calc(100vh-4rem)] flex flex-col justify-center">
+        <ParticleBackground baseColor="#f97316" secondaryColor="#c2410c" />
+        <div className="relative z-10 w-full">
+          <CompressClient />
+        </div>
+      </div>
     </>
   );
 }
