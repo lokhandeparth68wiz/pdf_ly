@@ -27,11 +27,11 @@ export function ParticleBackground() {
       powerPreference: "high-performance",
     });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.25)); // Lower cap for much better performance
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Allow up to 2x definition for crisper visuals on 144Hz setups
     mountRef.current.appendChild(renderer.domElement);
 
     // Particles setup
-    const particleCount = 800; // Reduced from 2000 for smooth 60fps
+    const particleCount = 1500; // Increased to maintain density over larger area
     const geometry = new THREE.BufferGeometry();
     const positions = new Float32Array(particleCount * 3);
     const colors = new Float32Array(particleCount * 3);
@@ -42,10 +42,10 @@ export function ParticleBackground() {
     const color3 = new THREE.Color("#ffffff"); // White
 
     for (let i = 0; i < particleCount; i++) {
-      // Spread particles in a wide volume
-      positions[i * 3] = (Math.random() - 0.5) * 100; // x
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 100; // y
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 50; // z
+      // Spread particles in a wide volume to prevent empty edges during panning
+      positions[i * 3] = (Math.random() - 0.5) * 350; // x
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 350; // y
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 150; // z
 
       // Mix colors
       const mixedColor = color1.clone();
@@ -117,8 +117,8 @@ export function ParticleBackground() {
     const windowHalfY = window.innerHeight / 2;
 
     const onDocumentMouseMove = (event: MouseEvent) => {
-      mouseX = (event.clientX - windowHalfX) * 0.05;
-      mouseY = (event.clientY - windowHalfY) * 0.05;
+      mouseX = (event.clientX - windowHalfX) * 0.015; // Reduced from 0.05 to limit camera pan range
+      mouseY = (event.clientY - windowHalfY) * 0.015;
     };
 
     document.addEventListener("mousemove", onDocumentMouseMove);
@@ -130,15 +130,17 @@ export function ParticleBackground() {
     const render = () => {
       animationFrameId = requestAnimationFrame(render);
 
+      const delta = clock.getDelta();
       const time = clock.getElapsedTime();
       material.uniforms.time.value = time;
 
-      // Smooth camera movement towards target (mouse)
+      // Framerate-independent smooth camera movement (works identically at 60fps or 144fps+)
       targetX = mouseX;
       targetY = mouseY;
       
-      camera.position.x += (targetX - camera.position.x) * 0.02;
-      camera.position.y += (-targetY - camera.position.y) * 0.02;
+      const lerpFactor = 1 - Math.exp(-2.0 * delta); // Adjusts easing continuously over delta time
+      camera.position.x += (targetX - camera.position.x) * lerpFactor;
+      camera.position.y += (-targetY - camera.position.y) * lerpFactor;
       camera.lookAt(scene.position);
 
       renderer.render(scene, camera);

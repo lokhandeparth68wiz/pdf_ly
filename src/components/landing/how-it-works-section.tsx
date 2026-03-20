@@ -74,7 +74,7 @@ export function HowItWorksSection() {
                 ref={el => { stepsRef.current[idx] = el; }}
                 className="flex flex-col items-center"
               >
-                <div className="w-24 h-24 rounded-full glass-card border flex items-center justify-center mb-6 relative group">
+                <div className="w-24 h-24 rounded-full glass-card flex items-center justify-center mb-6 relative group overflow-hidden shadow-[0_15px_35px_-10px_rgba(223,37,49,0.2)]">
                   <div className="absolute inset-0 rounded-full bg-linear-to-b from-white/10 to-transparent group-hover:scale-110 transition-transform duration-500" />
                   {step.icon}
                   

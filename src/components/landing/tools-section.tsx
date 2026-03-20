@@ -100,7 +100,7 @@ export function ToolsSection() {
                 <div className={`absolute -top-24 -right-24 w-48 h-48 bg-linear-to-br ${tool.gradient} rounded-full blur-[80px] opacity-0 group-hover:opacity-20 transition-opacity duration-700`} />
                 
                 <div className="relative z-10">
-                  <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 shadow-inner transition-transform duration-500 group-hover:scale-110">
+                  <div className="w-16 h-16 rounded-2xl bg-linear-to-br from-white/10 to-white/5 border border-white/10 border-t-white/20 backdrop-blur-md shadow-[inset_0_0_15px_rgba(255,255,255,0.05),0_8px_20px_rgba(0,0,0,0.5)] flex items-center justify-center mb-6 transition-all duration-500 group-hover:scale-110 group-hover:bg-white/10">
                     {tool.icon}
                   </div>
                   <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-neutral-200 transition-colors">

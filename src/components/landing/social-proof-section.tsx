@@ -21,7 +21,7 @@ export function SocialProofSection() {
           <div className="flex items-center justify-center gap-2">
             <div className="flex -space-x-4">
                {[1,2,3,4,5].map(i => (
-                 <div key={i} className="w-12 h-12 rounded-full border-2 border-[#0A0A0F] bg-neutral-800 flex items-center justify-center overflow-hidden">
+                 <div key={i} className="w-12 h-12 rounded-full glass-card flex items-center justify-center overflow-hidden">
                     {/* Dummy avatar gradient source */}
                     <div className={`w-full h-full bg-linear-to-br from-red-${i}00 to-rose-${i}00 opacity-50`} />
                  </div>

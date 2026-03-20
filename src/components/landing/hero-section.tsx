@@ -93,15 +93,17 @@ export function HeroSection() {
               </div>
               {/* Fake App Content */}
               <div className="flex-1 p-6 flex gap-6">
-                <div className="w-64 h-full rounded-lg bg-white/5 flex items-center justify-center border border-white/5 border-dashed">
-                   <div className="text-neutral-500 text-sm flex flex-col items-center gap-2">
-                     <span className="w-10 h-10 rounded bg-white/10 mb-2 animate-pulse" />
-                     Drop PDF here
+                <div className="flex-1 h-full rounded-lg bg-white/5 flex items-center justify-center border-2 border-white/10 border-dashed transition-all duration-300 hover:bg-white/10 hover:border-brand-primary/50">
+                   <div className="text-neutral-500 text-sm flex flex-col items-center gap-3">
+                     <span className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-1 shadow-inner relative overflow-hidden group">
+                       <div className="absolute inset-0 bg-brand-primary/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+                       <svg className="w-6 h-6 text-neutral-400 relative z-10 transition-colors duration-300 group-hover:text-brand-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                       </svg>
+                     </span>
+                     <span className="font-medium">Drop PDF here</span>
+                     <span className="text-xs text-neutral-600">or click to browse</span>
                    </div>
-                </div>
-                <div className="flex-1 flex flex-col gap-4">
-                   <div className="h-24 w-full rounded-lg bg-red-500/10 border border-red-500/20" />
-                   <div className="h-24 w-full rounded-lg bg-brand-primary/10 border border-brand-primary/20" />
                 </div>
               </div>
             </div>
