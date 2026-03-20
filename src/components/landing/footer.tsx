@@ -104,7 +104,7 @@ export function Footer() {
       {/* Policy Modal */}
       <AnimatePresence>
         {activePolicy && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
+          <div className="fixed inset-0 z-100 flex items-center justify-center p-4 sm:p-6">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -116,7 +116,7 @@ export function Footer() {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-2xl max-h-[85vh] overflow-hidden rounded-2xl bg-[#0a0a0a] border border-white/10 shadow-2xl flex flex-col"
+              className="relative w-full max-w-2xl max-h-[85vh] overflow-hidden rounded-2xl bg-brand-card border border-white/10 shadow-2xl flex flex-col"
             >
               <div className="flex items-center justify-between p-6 border-b border-white/10 bg-white/5">
                 <h2 className="text-xl font-display font-semibold text-white">
