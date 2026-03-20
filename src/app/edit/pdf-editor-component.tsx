@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Download, Type, PenTool, X, Undo2 } from "lucide-react";
+import { Download, Type, PenTool, X, Undo2, FileEdit } from "lucide-react";
 import { FileDropzone } from "@/components/file-dropzone";
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
@@ -148,65 +148,74 @@ export default function PdfEditorClient() {
   };
 
   return (
-    <div className="flex flex-col h-full absolute inset-0 pt-16 bg-neutral-100 dark:bg-neutral-950">
+    <div className="flex flex-col h-full min-h-[calc(100vh-4rem)] w-full">
       {!file ? (
-        <div className="p-12 w-full max-w-4xl mx-auto my-auto">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold mb-2 text-neutral-900 dark:text-white">Edit PDF Document</h1>
-            <p className="text-neutral-500">Add text, sign documents, and add annotations easily.</p>
+        <div className="p-12 w-full max-w-4xl mx-auto my-auto relative z-20">
+          <div className="text-center mb-10">
+            <div className="flex justify-center mb-4 relative z-20">
+              <div className="p-4 rounded-2xl glass-card border border-fuchsia-500/30 shadow-[0_0_20px_rgba(217,70,239,0.3)]">
+                <FileEdit className="w-10 h-10 text-fuchsia-400" />
+              </div>
+            </div>
+            <h1 className="text-3xl md:text-4xl font-display font-bold text-white mb-4 drop-shadow-lg">
+              Edit PDF
+            </h1>
+            <p className="text-lg text-neutral-300 max-w-2xl mx-auto drop-shadow">
+              Add text, shapes, images, and freehand annotations securely.
+            </p>
           </div>
-          <FileDropzone onFilesDropped={(files) => setFile(files[0])} multiple={false} />
+          <FileDropzone onFilesDropped={(files) => setFile(files[0])} multiple={false} theme="purple" />
         </div>
       ) : (
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col h-full w-full relative z-20 pb-4">
           {/* Toolbar */}
-          <div className="h-14 border-b border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 flex items-center justify-between px-4 shrink-0 shadow-sm z-10">
+          <div className="h-16 border-b border-white/10 glass-card bg-black/40 flex items-center justify-between px-6 shrink-0 z-10 mx-4 mt-6 rounded-t-2xl shadow-[0_0_30px_rgba(0,0,0,0.5)]">
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setFile(null)}
-                className="p-2 text-neutral-500 hover:text-neutral-900 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-md transition-colors"
+                className="p-2 text-neutral-400 hover:text-white bg-white/5 hover:bg-white/10 border border-transparent hover:border-white/10 rounded-md transition-colors glass-card"
                 title="Close file"
               >
                 <X className="w-5 h-5" />
               </button>
-              <span className="font-medium text-sm truncate max-w-[200px] text-neutral-900 dark:text-white">
+              <span className="font-medium text-sm truncate max-w-[200px] text-white">
                 {file.name}
               </span>
             </div>
             
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
               <button
                 onClick={addTextAnnotation}
-                className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${
-                  tool === "text" ? "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400" : "text-neutral-600 hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-800"
+                className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-xl transition-all border ${
+                  tool === "text" ? "border-fuchsia-500 bg-fuchsia-500/10 text-fuchsia-400" : "border-white/10 bg-white/5 text-neutral-300 hover:bg-white/10 hover:text-white"
                 }`}
               >
                 <Type className="w-4 h-4" /> Add Text
               </button>
               <button
                 onClick={() => setShowSignaturePad(true)}
-                className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${
-                  tool === "draw" ? "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400" : "text-neutral-600 hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-800"
+                className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-xl transition-all border ${
+                  tool === "draw" ? "border-fuchsia-500 bg-fuchsia-500/10 text-fuchsia-400" : "border-white/10 bg-white/5 text-neutral-300 hover:bg-white/10 hover:text-white"
                 }`}
               >
                 <PenTool className="w-4 h-4" /> Sign
               </button>
             </div>
 
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2 text-sm text-neutral-500">
+            <div className="flex items-center gap-6">
+              <div className="flex items-center gap-3 text-sm text-neutral-400 font-medium">
                 <button
                   disabled={currentPage <= 1}
                   onClick={() => setCurrentPage(c => c - 1)}
-                  className="px-2 disabled:opacity-50"
+                  className="px-3 py-1 bg-white/5 border border-white/10 rounded-md hover:bg-white/10 hover:text-white transition-colors disabled:opacity-30"
                   >
                   Prev
                 </button>
-                <span>{currentPage} / {numPages || '-'}</span>
+                <span className="text-white bg-white/10 px-3 py-1 rounded-md border border-white/5 shadow-inner">{currentPage} / {numPages || '-'}</span>
                 <button
                   disabled={currentPage >= numPages}
                   onClick={() => setCurrentPage(c => c + 1)}
-                  className="px-2 disabled:opacity-50"
+                  className="px-3 py-1 bg-white/5 border border-white/10 rounded-md hover:bg-white/10 hover:text-white transition-colors disabled:opacity-30"
                   >
                   Next
                 </button>
@@ -214,7 +223,7 @@ export default function PdfEditorClient() {
               <button
                 onClick={handleExport}
                 disabled={isExporting}
-                className="flex items-center gap-2 px-4 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md transition-colors shadow-sm disabled:opacity-50"
+                className="flex items-center gap-2 px-6 py-2 bg-fuchsia-600/90 hover:bg-fuchsia-500 border border-fuchsia-400/30 shadow-[0_0_15px_rgba(217,70,239,0.3)] text-white text-sm font-medium rounded-xl transition-all disabled:opacity-50"
               >
                 {isExporting ? "Exporting..." : <><Download className="w-4 h-4" /> Apply & Download</>}
               </button>
@@ -222,7 +231,7 @@ export default function PdfEditorClient() {
           </div>
 
           {/* Canvas Area */}
-          <div className="flex-1 overflow-auto bg-neutral-100 dark:bg-neutral-950 p-4 relative flex justify-center">
+          <div className="flex-1 overflow-auto bg-black/20 p-8 relative flex justify-center mx-4 mb-4 border border-t-0 border-white/10 rounded-b-2xl shadow-[0_20px_40px_rgba(0,0,0,0.5)] backdrop-blur-xl">
             {fileUrl && (
               <div className="relative shadow-xl bg-white transition-all transform-gpu" style={{ minHeight: "800px", minWidth: "600px" }}>
                 <Document
@@ -280,10 +289,10 @@ export default function PdfEditorClient() {
 
       {/* Signature Modal */}
       {showSignaturePad && (
-        <div className="fixed inset-0 bg-neutral-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-neutral-900 rounded-2xl p-6 w-full max-w-md shadow-xl border border-neutral-200 dark:border-neutral-800">
-            <h3 className="text-lg font-semibold mb-4 text-neutral-900 dark:text-white">Draw Signature</h3>
-            <div className="border-2 border-dashed border-neutral-300 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-950 rounded-xl mb-4 overflow-hidden relative">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4">
+          <div className="glass-card bg-black/70 rounded-3xl p-8 w-full max-w-md shadow-[0_0_40px_rgba(0,0,0,0.5)] border border-white/10 relative">
+            <h3 className="text-xl font-bold mb-6 text-white text-center">Draw Signature</h3>
+            <div className="border-2 border-dashed border-white/20 bg-white/80 rounded-2xl mb-6 overflow-hidden relative shadow-inner">
                <SignatureCanvas 
                  ref={sigCanvas}
                  penColor="black"
@@ -295,16 +304,16 @@ export default function PdfEditorClient() {
                  </button>
                </div>
             </div>
-            <div className="flex justify-end gap-3">
+            <div className="flex justify-end gap-4">
               <button 
                 onClick={() => setShowSignaturePad(false)}
-                className="px-4 py-2 font-medium text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 rounded-lg"
+                className="px-6 py-3 font-medium text-neutral-300 hover:text-white glass-card bg-white/5 border border-white/10 hover:bg-white/10 rounded-xl transition-all"
               >
                 Cancel
               </button>
               <button 
                 onClick={saveSignature}
-                className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow-sm"
+                className="px-6 py-3 bg-fuchsia-600 hover:bg-fuchsia-500 border border-fuchsia-400/30 shadow-[0_0_15px_rgba(217,70,239,0.3)] text-white font-medium rounded-xl transition-all"
               >
                 Save Signature
               </button>

@@ -8,7 +8,7 @@ interface FileDropzoneProps {
   onFilesDropped: (files: File[]) => void;
   accept?: Record<string, string[]>;
   multiple?: boolean;
-  theme?: "blue" | "amber";
+  theme?: "blue" | "amber" | "purple";
 }
 
 export function FileDropzone({
@@ -46,6 +46,13 @@ export function FileDropzone({
       icon: "text-amber-400",
       btnBg: "bg-amber-600 hover:bg-amber-500",
       btnBorder: "border-amber-400/30",
+    },
+    purple: {
+      activeBorder: "border-fuchsia-500",
+      activeBg: "bg-fuchsia-500/10",
+      icon: "text-fuchsia-400",
+      btnBg: "bg-fuchsia-600 hover:bg-fuchsia-500",
+      btnBorder: "border-fuchsia-400/30",
     }
   };
 
