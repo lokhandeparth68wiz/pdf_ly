@@ -43,6 +43,7 @@ export default function CompressPdfPage() {
       heroTitle="Shrink your PDF sizes instantly"
       heroDescription="Got a PDF that's too large to email? Reduce its file size dramatically while maintaining perfect visual quality."
       actionButtonText="Compress PDF"
+      toolUrl="/compress"
       faqs={faqs}
       steps={steps}
       seoContentBlocks={seoblocks}

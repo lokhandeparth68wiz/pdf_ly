@@ -5,6 +5,7 @@ import { ParticleBackground } from "@/components/effects/particle-background";
 import { GradientMesh } from "@/components/effects/gradient-mesh";
 import { NoiseTexture } from "@/components/effects/noise-texture";
 import { StructuredData, generateSoftwareSchema, generateFaqSchema, generateHowToSchema } from "@/components/seo/structured-data";
+import { UploadCloud } from "lucide-react";
 
 type FAQ = { question: string; answer: string };
 type Step = { name: string; text: string };
@@ -17,6 +18,7 @@ interface ToolContentLayoutProps {
   faqs: FAQ[];
   steps: Step[];
   seoContentBlocks: { title: string; content: string }[];
+  toolUrl: string;
   children?: React.ReactNode;
 }
 
@@ -28,6 +30,7 @@ export function ToolContentLayout({
   faqs,
   steps,
   seoContentBlocks,
+  toolUrl,
   children
 }: ToolContentLayoutProps) {
   return (
@@ -61,11 +64,13 @@ export function ToolContentLayout({
           <div className="w-full max-w-3xl mx-auto aspect-video rounded-2xl glass-card border border-white/10 shadow-2xl flex flex-col items-center justify-center p-8 mb-8 bg-black/40 backdrop-blur-md">
              {children || (
                 <div className="flex flex-col items-center justify-center gap-4 text-neutral-400">
-                  <div className="w-20 h-20 rounded-xl bg-white/5 border border-white/10 border-dashed animate-pulse flex items-center justify-center mb-4" />
+                  <div className="w-20 h-20 rounded-xl bg-white/5 border border-white/10 border-dashed animate-pulse flex items-center justify-center mb-4">
+                    <UploadCloud className="w-8 h-8 text-neutral-500" />
+                  </div>
                   <p>Drag and drop your PDF here</p>
-                  <button className="px-8 py-4 rounded-full font-medium text-white bg-brand-primary shadow-[0_0_30px_-10px_rgba(223,37,49,0.5)] hover:shadow-[0_0_50px_-10px_rgba(223,37,49,0.8)] transition-all">
+                  <Link href={toolUrl} className="px-8 py-4 rounded-full font-medium text-white bg-brand-primary shadow-[0_0_30px_-10px_rgba(223,37,49,0.5)] hover:shadow-[0_0_50px_-10px_rgba(223,37,49,0.8)] transition-all">
                     {actionButtonText}
-                  </button>
+                  </Link>
                 </div>
              )}
           </div>

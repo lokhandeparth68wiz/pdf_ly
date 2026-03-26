@@ -43,6 +43,7 @@ export default function EditPdfPage() {
       heroTitle="Edit your PDF files easily"
       heroDescription="Add text, signatures, shapes, and images to your PDF documents directly from your browser. Completely free."
       actionButtonText="Edit PDF"
+      toolUrl="/edit"
       faqs={faqs}
       steps={steps}
       seoContentBlocks={seoblocks}

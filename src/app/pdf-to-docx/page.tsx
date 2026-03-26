@@ -43,6 +43,7 @@ export default function PdfToDocxPage() {
       heroTitle="Convert PDF to editable Word doc"
       heroDescription="Turn your static PDFs into fully editable Microsoft Word documents with perfect formatting retention."
       actionButtonText="Convert to DOCX"
+      toolUrl="/pdf-to-docx-tool"
       faqs={faqs}
       steps={steps}
       seoContentBlocks={seoblocks}

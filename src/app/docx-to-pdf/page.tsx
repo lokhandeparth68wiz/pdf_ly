@@ -43,6 +43,7 @@ export default function DocxToPdfPage() {
       heroTitle="Convert Word documents to PDF"
       heroDescription="Make your DOCX files perfectly readable on any device by converting them into secure, unalterable PDFs."
       actionButtonText="Convert to PDF"
+      toolUrl="/docx-to-pdf-tool"
       faqs={faqs}
       steps={steps}
       seoContentBlocks={seoblocks}

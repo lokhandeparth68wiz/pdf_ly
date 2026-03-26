@@ -70,47 +70,6 @@ export function HeroSection() {
           </motion.div>
         </motion.div>
       </div>
-
-      {/* Floating UI Preview */}
-      <motion.div
-        initial={{ opacity: 0, y: 100, rotateX: 20 }}
-        animate={{ opacity: 1, y: 0, rotateX: 0 }}
-        transition={{ duration: 1, delay: 0.8, ease: "easeOut" }}
-        style={{ perspective: 1000 }}
-        className="w-full max-w-5xl z-10 mx-auto px-4"
-      >
-        <div className="relative w-full aspect-video rounded-2xl overflow-hidden glass-card border border-white/10 shadow-2xl shadow-red-500/10 flex items-center justify-center">
-            {/* Mock Dashboard UI inside the glass card */}
-            <div className="absolute inset-0 bg-linear-to-b from-white/5 to-transparent pointer-events-none" />
-            
-            <div className="w-4/5 h-4/5 rounded-xl border border-white/5 bg-brand-dark/80 flex flex-col overflow-hidden shadow-2xl">
-              {/* Fake App header */}
-              <div className="h-12 border-b border-white/5 flex items-center px-4 gap-2">
-                 <div className="w-3 h-3 rounded-full bg-red-500/50" />
-                 <div className="w-3 h-3 rounded-full bg-amber-500/50" />
-                 <div className="w-3 h-3 rounded-full bg-green-500/50" />
-                 <div className="ml-4 h-6 w-48 rounded bg-white/5" />
-              </div>
-              {/* Fake App Content */}
-              <div className="flex-1 p-6 flex gap-6">
-                <div className="flex-1 h-full rounded-lg bg-white/5 flex items-center justify-center border-2 border-white/10 border-dashed transition-all duration-300 hover:bg-white/10 hover:border-brand-primary/50">
-                   <div className="text-neutral-500 text-sm flex flex-col items-center gap-3">
-                     <span className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-1 shadow-inner relative overflow-hidden group">
-                       <div className="absolute inset-0 bg-brand-primary/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-                       <svg className="w-6 h-6 text-neutral-400 relative z-10 transition-colors duration-300 group-hover:text-brand-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-                       </svg>
-                     </span>
-                     <span className="font-medium">Drop PDF here</span>
-                     <span className="text-xs text-neutral-600">or click to browse</span>
-                   </div>
-                </div>
-              </div>
-            </div>
-            
-            <div className="absolute -inset-0.5 bg-linear-to-tr from-red-500/20 via-transparent to-brand-primary/20 rounded-2xl z-[-1] blur-sm opacity-50" />
-        </div>
-      </motion.div>
     </section>
   );
 }
