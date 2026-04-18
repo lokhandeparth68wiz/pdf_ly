@@ -4,7 +4,7 @@ import { useState } from "react";
 import { FileArchive, Download, Loader2, Settings2 } from "lucide-react";
 import { FileDropzone } from "@/components/file-dropzone";
 
-export default function CompressClient() {
+export default function CompressClient({ hideHeader = false }: { hideHeader?: boolean } = {}) {
   const [file, setFile] = useState<File | null>(null);
   const [level, setLevel] = useState<"screen" | "ebook" | "printer">("screen");
   const [isCompressing, setIsCompressing] = useState(false);
@@ -13,6 +13,7 @@ export default function CompressClient() {
 
   const handleFilesDropped = (acceptedFiles: File[]) => {
     setFile(acceptedFiles[0]);
+    if (compressedUrl) URL.revokeObjectURL(compressedUrl);
     setCompressedUrl(null);
     setSavings(null);
   };
@@ -37,6 +38,7 @@ export default function CompressClient() {
       }
 
       const blob = await response.blob();
+      if (compressedUrl) URL.revokeObjectURL(compressedUrl);
       const url = URL.createObjectURL(blob);
       setCompressedUrl(url);
       
@@ -58,20 +60,22 @@ export default function CompressClient() {
     : 0;
 
   return (
-    <div className="container mx-auto px-4 py-12 max-w-4xl">
-      <div className="text-center mb-10">
-        <div className="flex justify-center mb-4 relative z-20">
-          <div className="p-4 rounded-2xl glass-card border border-amber-500/30 shadow-[0_0_20px_rgba(245,158,11,0.3)]">
-            <FileArchive className="w-10 h-10 text-amber-400" />
+    <div className={hideHeader ? "w-full" : "container mx-auto px-4 py-12 max-w-4xl"}>
+      {!hideHeader && (
+        <div className="text-center mb-10">
+          <div className="flex justify-center mb-4 relative z-20">
+            <div className="p-4 rounded-2xl glass-card border border-amber-500/30 shadow-[0_0_20px_rgba(245,158,11,0.3)]">
+              <FileArchive className="w-10 h-10 text-amber-400" />
+            </div>
           </div>
+          <h1 className="text-3xl md:text-4xl font-display font-bold text-white mb-4 drop-shadow-lg">
+            Compress PDF
+          </h1>
+          <p className="text-lg text-neutral-300 max-w-2xl mx-auto drop-shadow">
+            Reduce your PDF file size while keeping the highest possible quality.
+          </p>
         </div>
-        <h1 className="text-3xl md:text-4xl font-display font-bold text-white mb-4 drop-shadow-lg">
-          Compress PDF
-        </h1>
-        <p className="text-lg text-neutral-300 max-w-2xl mx-auto drop-shadow">
-          Reduce your PDF file size while keeping the highest possible quality.
-        </p>
-      </div>
+      )}
 
       <div className="space-y-8">
         {!file && (

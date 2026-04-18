@@ -24,7 +24,7 @@ interface Annotation {
   pageIndex: number;
 }
 
-export default function PdfEditorClient() {
+export default function PdfEditorClient({ hideHeader = false }: { hideHeader?: boolean } = {}) {
   const [file, setFile] = useState<File | null>(null);
   const [fileUrl, setFileUrl] = useState<string | null>(null);
   const [numPages, setNumPages] = useState<number>(0);
@@ -60,8 +60,8 @@ export default function PdfEditorClient() {
       type: "text",
       content: text,
       pageIndex: currentPage - 1,
-      x: 100, // Default position
-      y: 100, // Default position
+      x: 100,
+      y: 100,
     }]);
     setTool(null);
   };
@@ -101,11 +101,6 @@ export default function PdfEditorClient() {
         const page = pages[ann.pageIndex];
         const { height } = page.getSize();
 
-        // Very basic coordinate mapping (assuming 1:1 scale for simplicity here)
-        // PDF coordinates start from bottom-left. We might need to invert Y.
-        // Screen Y = 0 is top. PDF Y = height is top.
-        // Real coordinate mapping requires accounting for actual renderScale and DPI.
-        // For this demo, we'll place items roughly where they are defined, assuming basic scaling.
         const pdfX = ann.x;
         const pdfY = height - ann.y - (ann.type === "signature" ? 50 : 20);
 
@@ -119,7 +114,7 @@ export default function PdfEditorClient() {
         } else if (ann.type === "signature" && ann.dataUrl) {
           const imageBytes = await fetch(ann.dataUrl).then((res) => res.arrayBuffer());
           const signatureImage = await pdfDoc.embedPng(imageBytes);
-          const sigDims = signatureImage.scale(0.5); // scale down
+          const sigDims = signatureImage.scale(0.5);
           
           page.drawImage(signatureImage, {
             x: pdfX,
@@ -150,20 +145,22 @@ export default function PdfEditorClient() {
   return (
     <div className="flex flex-col h-full min-h-[calc(100vh-4rem)] w-full">
       {!file ? (
-        <div className="p-12 w-full max-w-4xl mx-auto my-auto relative z-20">
-          <div className="text-center mb-10">
-            <div className="flex justify-center mb-4 relative z-20">
-              <div className="p-4 rounded-2xl glass-card border border-fuchsia-500/30 shadow-[0_0_20px_rgba(217,70,239,0.3)]">
-                <FileEdit className="w-10 h-10 text-fuchsia-400" />
+        <div className={hideHeader ? "w-full relative z-20" : "p-12 w-full max-w-4xl mx-auto my-auto relative z-20"}>
+          {!hideHeader && (
+            <div className="text-center mb-10">
+              <div className="flex justify-center mb-4 relative z-20">
+                <div className="p-4 rounded-2xl glass-card border border-fuchsia-500/30 shadow-[0_0_20px_rgba(217,70,239,0.3)]">
+                  <FileEdit className="w-10 h-10 text-fuchsia-400" />
+                </div>
               </div>
+              <h1 className="text-3xl md:text-4xl font-display font-bold text-white mb-4 drop-shadow-lg">
+                Edit PDF
+              </h1>
+              <p className="text-lg text-neutral-300 max-w-2xl mx-auto drop-shadow">
+                Add text, shapes, images, and freehand annotations securely.
+              </p>
             </div>
-            <h1 className="text-3xl md:text-4xl font-display font-bold text-white mb-4 drop-shadow-lg">
-              Edit PDF
-            </h1>
-            <p className="text-lg text-neutral-300 max-w-2xl mx-auto drop-shadow">
-              Add text, shapes, images, and freehand annotations securely.
-            </p>
-          </div>
+          )}
           <FileDropzone onFilesDropped={(files) => setFile(files[0])} multiple={false} theme="purple" />
         </div>
       ) : (

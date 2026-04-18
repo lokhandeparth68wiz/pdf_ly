@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { ToolContentLayout } from '@/components/seo/tool-content-layout';
+import PdfEditorClient from '../edit/pdf-editor-client';
 
 export const metadata: Metadata = {
   title: 'Edit PDF Online Free | PDF Editor',
@@ -43,10 +44,14 @@ export default function EditPdfPage() {
       heroTitle="Edit your PDF files easily"
       heroDescription="Add text, signatures, shapes, and images to your PDF documents directly from your browser. Completely free."
       actionButtonText="Edit PDF"
-      toolUrl="/edit"
+      toolUrl="/edit-pdf"
       faqs={faqs}
       steps={steps}
       seoContentBlocks={seoblocks}
-    />
+    >
+      <div className="w-full">
+        <PdfEditorClient hideHeader={true} />
+      </div>
+    </ToolContentLayout>
   );
 }

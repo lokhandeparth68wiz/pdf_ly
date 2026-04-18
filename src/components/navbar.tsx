@@ -25,6 +25,12 @@ export function Navbar() {
           <Link href="/edit" className="text-sm font-medium text-neutral-400 hover:text-white transition-colors">
             Edit
           </Link>
+          <Link href="/pdf-to-docx" className="text-sm font-medium text-neutral-400 hover:text-white transition-colors">
+            PDF to Word
+          </Link>
+          <Link href="/docx-to-pdf" className="text-sm font-medium text-neutral-400 hover:text-white transition-colors">
+            Word to PDF
+          </Link>
         </div>
       </div>
     </nav>

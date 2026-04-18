@@ -50,7 +50,7 @@ export function constructMetadata({
       images: [image],
     },
     icons,
-    metadataBase: new URL('https://pdfly.com'),
+    metadataBase: new URL('https://pdf-ly.vercel.app'),
     ...(noIndex && {
       robots: {
         index: false,

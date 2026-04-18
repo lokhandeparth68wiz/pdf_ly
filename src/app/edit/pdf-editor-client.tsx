@@ -13,6 +13,7 @@ const PdfEditorComponent = dynamic(() => import("./pdf-editor-component"), {
   ),
 });
 
-export default function PdfEditorClient() {
-  return <PdfEditorComponent />;
+export default function PdfEditorClient({ hideHeader = false }: { hideHeader?: boolean } = {}) {
+  return <PdfEditorComponent hideHeader={hideHeader} />;
 }
+

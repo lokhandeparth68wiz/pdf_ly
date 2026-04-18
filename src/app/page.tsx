@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { FileEdit, FileArchive, CopyPlus, FileText, FileType2 } from "lucide-react";
 import { ParticleBackground } from "@/components/effects/particle-background";
 import { GradientMesh } from "@/components/effects/gradient-mesh";
 import { NoiseTexture } from "@/components/effects/noise-texture";
@@ -11,7 +10,6 @@ import { HowItWorksSection } from "@/components/landing/how-it-works-section";
 import { FeaturesSection } from "@/components/landing/features-section";
 import { SocialProofSection } from "@/components/landing/social-proof-section";
 import { CtaSection } from "@/components/landing/cta-section";
-import { Footer } from "@/components/landing/footer";
 import { SeoContentSection } from "@/components/seo/seo-content-section";
 
 export default function Home() {
@@ -49,9 +47,6 @@ export default function Home() {
         {/* SEO Long-form Keyword Content */}
         <SeoContentSection />
       </main>
-
-      {/* Footer */}
-      <Footer />
     </div>
   );
 }

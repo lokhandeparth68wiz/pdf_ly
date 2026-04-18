@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { ToolContentLayout } from '@/components/seo/tool-content-layout';
+import MergeClient from '../merge/merge-client';
 
 export const metadata: Metadata = {
   title: 'Merge PDF Online Free | Combine PDFs',
@@ -43,10 +44,15 @@ export default function MergePdfPage() {
       heroTitle="Combine multiple PDFs into one"
       heroDescription="The easiest online PDF merger. No installation, secure, and lightning fast. Drop your files below to get started."
       actionButtonText="Merge PDFs"
-      toolUrl="/merge"
+      toolUrl="/merge-pdf"
       faqs={faqs}
       steps={steps}
       seoContentBlocks={seoblocks}
-    />
+    >
+      <div className="w-full">
+        <MergeClient hideHeader={true} />
+      </div>
+    </ToolContentLayout>
   );
 }
+

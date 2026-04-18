@@ -1,13 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const { exec } = require("child_process");
+const { execFile } = require("child_process");
 const fs = require("fs").promises;
 const fsSync = require("fs");
 const path = require("path");
 const os = require("os");
 
-const upload = multer({ dest: os.tmpdir() });
+const upload = multer({
+  dest: os.tmpdir(),
+  limits: { fileSize: 100 * 1024 * 1024 } // 100MB
+});
 
 router.post('/', upload.single('file'), async (req, res) => {
   try {
@@ -16,6 +19,12 @@ router.post('/', upload.single('file'), async (req, res) => {
     
     if (!file || !targetFormat) {
       return res.status(400).json({ error: "Missing file or targetFormat" });
+    }
+
+    // Validate targetFormat to prevent injection
+    const allowedFormats = ["pdf", "docx", "doc"];
+    if (!allowedFormats.includes(targetFormat)) {
+      return res.status(400).json({ error: "Invalid target format" });
     }
 
     const ext = path.extname(file.originalname);
@@ -30,18 +39,18 @@ router.post('/', upload.single('file'), async (req, res) => {
     let loCommand = "libreoffice";
     if (process.platform === "win32") {
       const defaultWinPath = "C:\\Program Files\\LibreOffice\\program\\soffice.exe";
-      loCommand = fsSync.existsSync(defaultWinPath) ? `"${defaultWinPath}"` : "soffice";
+      loCommand = fsSync.existsSync(defaultWinPath) ? defaultWinPath : "soffice";
     }
 
     const convertFile = () =>
       new Promise((resolve, reject) => {
-        let command = `${loCommand} --headless --convert-to ${targetFormat} --outdir "${outdir}" "${inputPath}"`;
+        let args = ["--headless", "--convert-to", targetFormat, "--outdir", outdir, inputPath];
         
         if (ext.toLowerCase() === ".pdf" && targetFormat === "docx") {
-          command = `${loCommand} --headless --infilter="writer_pdf_import" --convert-to docx --outdir "${outdir}" "${inputPath}"`;
+          args = ["--headless", "--infilter=writer_pdf_import", "--convert-to", "docx", "--outdir", outdir, inputPath];
         }
 
-        exec(command, { env: { ...process.env, HOME: os.tmpdir() } }, async (error, stdout, stderr) => {
+        execFile(loCommand, args, { env: { ...process.env, HOME: os.tmpdir() } }, async (error, stdout, stderr) => {
           if (error) {
              console.error(`LibreOffice error:`, error);
              console.error(`LibreOffice stderr:`, stderr);
@@ -70,8 +79,9 @@ router.post('/', upload.single('file'), async (req, res) => {
       await fs.unlink(inputPath).catch(console.error);
       await fs.unlink(outputPath).catch(console.error);
 
+      const safeName = file.originalname.replace(/[^a-zA-Z0-9._-]/g, '_');
       res.setHeader('Content-Type', targetFormat === "pdf" ? "application/pdf" : "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-      res.setHeader('Content-Disposition', `attachment; filename="converted-${file.originalname.replace(ext, `.${targetFormat}`)}"`);
+      res.setHeader('Content-Disposition', `attachment; filename="converted-${safeName.replace(ext, `.${targetFormat}`)}"`);
       return res.send(convertedBuffer);
       
     } catch (loError) {

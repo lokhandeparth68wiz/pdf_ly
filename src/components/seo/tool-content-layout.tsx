@@ -1,6 +1,5 @@
 import Link from "next/link";
 
-import { Footer } from "@/components/landing/footer";
 import { ParticleBackground } from "@/components/effects/particle-background";
 import { GradientMesh } from "@/components/effects/gradient-mesh";
 import { NoiseTexture } from "@/components/effects/noise-texture";
@@ -136,7 +135,6 @@ export function ToolContentLayout({
 
       </main>
 
-      <Footer />
     </div>
   );
 }

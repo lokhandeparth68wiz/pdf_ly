@@ -26,7 +26,7 @@ export interface FileItem {
   file: File;
 }
 
-export default function MergeClient() {
+export default function MergeClient({ hideHeader = false }: { hideHeader?: boolean } = {}) {
   const [files, setFiles] = useState<FileItem[]>([]);
   const [isMerging, setIsMerging] = useState(false);
   const [mergedPdfUrl, setMergedPdfUrl] = useState<string | null>(null);
@@ -44,12 +44,18 @@ export default function MergeClient() {
       file,
     }));
     setFiles((prev) => [...prev, ...newItems]);
-    setMergedPdfUrl(null); // Reset when new files are added
+    if (mergedPdfUrl) {
+      URL.revokeObjectURL(mergedPdfUrl);
+      setMergedPdfUrl(null);
+    }
   };
 
   const handleRemove = (id: string) => {
     setFiles((prev) => prev.filter((item) => item.id !== id));
-    setMergedPdfUrl(null);
+    if (mergedPdfUrl) {
+      URL.revokeObjectURL(mergedPdfUrl);
+      setMergedPdfUrl(null);
+    }
   };
 
   const handleDragEnd = (event: DragEndEvent) => {
@@ -61,7 +67,10 @@ export default function MergeClient() {
         const newIndex = items.findIndex((item) => item.id === over.id);
         return arrayMove(items, oldIndex, newIndex);
       });
-      setMergedPdfUrl(null);
+      if (mergedPdfUrl) {
+        URL.revokeObjectURL(mergedPdfUrl);
+        setMergedPdfUrl(null);
+      }
     }
   };
 
@@ -84,6 +93,7 @@ export default function MergeClient() {
 
       const pdfBytes = await mergedPdf.save();
       const blob = new Blob([pdfBytes as BlobPart], { type: "application/pdf" });
+      if (mergedPdfUrl) URL.revokeObjectURL(mergedPdfUrl);
       const url = URL.createObjectURL(blob);
       setMergedPdfUrl(url);
     } catch (error) {
@@ -95,20 +105,22 @@ export default function MergeClient() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-12 max-w-4xl">
-      <div className="text-center mb-10">
-        <div className="flex justify-center mb-4 relative z-20">
-          <div className="p-4 rounded-2xl glass-card border border-blue-500/30 shadow-[0_0_20px_rgba(59,130,246,0.3)]">
-            <CopyPlus className="w-10 h-10 text-blue-400" />
+    <div className={hideHeader ? "w-full" : "container mx-auto px-4 py-12 max-w-4xl"}>
+      {!hideHeader && (
+        <div className="text-center mb-10">
+          <div className="flex justify-center mb-4 relative z-20">
+            <div className="p-4 rounded-2xl glass-card border border-blue-500/30 shadow-[0_0_20px_rgba(59,130,246,0.3)]">
+              <CopyPlus className="w-10 h-10 text-blue-400" />
+            </div>
           </div>
+          <h1 className="text-3xl md:text-4xl font-display font-bold text-white mb-4 drop-shadow-lg">
+            Merge PDF Files
+          </h1>
+          <p className="text-lg text-neutral-300 max-w-2xl mx-auto drop-shadow">
+            Combine PDFs in the order you want with the easiest PDF merger available.
+          </p>
         </div>
-        <h1 className="text-3xl md:text-4xl font-display font-bold text-white mb-4 drop-shadow-lg">
-          Merge PDF Files
-        </h1>
-        <p className="text-lg text-neutral-300 max-w-2xl mx-auto drop-shadow">
-          Combine PDFs in the order you want with the easiest PDF merger available.
-        </p>
-      </div>
+      )}
 
       <div className="space-y-8">
         <FileDropzone onFilesDropped={handleFilesDropped} multiple={true} />

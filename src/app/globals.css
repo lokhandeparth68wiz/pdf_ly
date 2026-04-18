@@ -67,7 +67,7 @@ body {
   --color-brand-dark: #000000;
   --color-brand-card: #0a0a0a;
   
-  --font-display: var(--font-space-grotesk);
+  --font-display: var(--font-geist-sans);
 }
 
 @property --gradient-angle {
