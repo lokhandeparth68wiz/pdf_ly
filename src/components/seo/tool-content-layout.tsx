@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Navbar } from "@/components/navbar";
+
 import { Footer } from "@/components/landing/footer";
 import { ParticleBackground } from "@/components/effects/particle-background";
 import { GradientMesh } from "@/components/effects/gradient-mesh";
@@ -47,7 +47,7 @@ export function ToolContentLayout({
         <NoiseTexture />
       </div>
 
-      <Navbar />
+
 
       <main className="flex-1 flex flex-col relative z-10 w-full pt-32 pb-24 px-6 max-w-5xl mx-auto">
         
@@ -60,9 +60,13 @@ export function ToolContentLayout({
             {heroDescription}
           </p>
           
-          {/* Mock Interactive Upload/Action Area */}
-          <div className="w-full max-w-3xl mx-auto aspect-video rounded-2xl glass-card border border-white/10 shadow-2xl flex flex-col items-center justify-center p-8 mb-8 bg-black/40 backdrop-blur-md">
-             {children || (
+          {/* Interactive Upload/Action Area */}
+          {children ? (
+            <div className="w-full max-w-3xl mx-auto">
+              {children}
+            </div>
+          ) : (
+            <div className="w-full max-w-3xl mx-auto aspect-video rounded-2xl glass-card border border-white/10 shadow-2xl flex flex-col items-center justify-center p-8 mb-8 bg-black/40 backdrop-blur-md">
                 <div className="flex flex-col items-center justify-center gap-4 text-neutral-400">
                   <div className="w-20 h-20 rounded-xl bg-white/5 border border-white/10 border-dashed animate-pulse flex items-center justify-center mb-4">
                     <UploadCloud className="w-8 h-8 text-neutral-500" />
@@ -72,8 +76,8 @@ export function ToolContentLayout({
                     {actionButtonText}
                   </Link>
                 </div>
-             )}
-          </div>
+            </div>
+          )}
         </section>
 
         {/* How it works */}

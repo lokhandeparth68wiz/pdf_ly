@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { ToolContentLayout } from '@/components/seo/tool-content-layout';
+import PdfToDocxClient from './pdf-to-docx-client';
 
 export const metadata: Metadata = {
   title: 'PDF to Word Converter | Convert PDF to DOCX Free',
@@ -43,10 +44,14 @@ export default function PdfToDocxPage() {
       heroTitle="Convert PDF to editable Word doc"
       heroDescription="Turn your static PDFs into fully editable Microsoft Word documents with perfect formatting retention."
       actionButtonText="Convert to DOCX"
-      toolUrl="/pdf-to-docx-tool"
+      toolUrl="/pdf-to-docx"
       faqs={faqs}
       steps={steps}
       seoContentBlocks={seoblocks}
-    />
+    >
+      <div className="w-full">
+        <PdfToDocxClient hideHeader={true} />
+      </div>
+    </ToolContentLayout>
   );
 }

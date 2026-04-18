@@ -9,6 +9,7 @@ interface FileDropzoneProps {
   accept?: Record<string, string[]>;
   multiple?: boolean;
   theme?: "blue" | "amber" | "purple";
+  description?: string;
 }
 
 export function FileDropzone({
@@ -16,6 +17,7 @@ export function FileDropzone({
   accept = { "application/pdf": [".pdf"] },
   multiple = true,
   theme = "blue",
+  description,
 }: FileDropzoneProps) {
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
@@ -79,7 +81,7 @@ export function FileDropzone({
           {isDragActive ? "Drop files here" : "Choose files or drag & drop"}
         </h3>
         <p className="text-neutral-400 max-w-xs">
-          Supported formats: PDF. Up to 100MB per file.
+          {description || "Supported formats: PDF. Up to 100MB per file."}
         </p>
         <button 
           type="button" 

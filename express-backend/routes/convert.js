@@ -27,14 +27,18 @@ router.post('/', upload.single('file'), async (req, res) => {
 
     await fs.rename(file.path, inputPath);
 
-    const loCommand = process.platform === "win32" ? "soffice" : "libreoffice";
+    let loCommand = "libreoffice";
+    if (process.platform === "win32") {
+      const defaultWinPath = "C:\\Program Files\\LibreOffice\\program\\soffice.exe";
+      loCommand = fsSync.existsSync(defaultWinPath) ? `"${defaultWinPath}"` : "soffice";
+    }
 
     const convertFile = () =>
       new Promise((resolve, reject) => {
-        let command = `"${loCommand}" --headless --convert-to ${targetFormat} --outdir "${outdir}" "${inputPath}"`;
+        let command = `${loCommand} --headless --convert-to ${targetFormat} --outdir "${outdir}" "${inputPath}"`;
         
         if (ext.toLowerCase() === ".pdf" && targetFormat === "docx") {
-          command = `"${loCommand}" --headless --infilter="writer_pdf_import" --convert-to docx --outdir "${outdir}" "${inputPath}"`;
+          command = `${loCommand} --headless --infilter="writer_pdf_import" --convert-to docx --outdir "${outdir}" "${inputPath}"`;
         }
 
         exec(command, { env: { ...process.env, HOME: os.tmpdir() } }, async (error, stdout, stderr) => {
