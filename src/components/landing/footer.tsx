@@ -145,7 +145,7 @@ export function Footer() {
           
           <div className="flex flex-col items-center md:items-start text-center md:text-left max-w-sm">
             <Link href="/" className="flex items-center gap-2 mb-4 group">
-              <div className="w-8 h-8 rounded-lg bg-linear-to-br from-red-600 to-brand-primary flex items-center justify-center shadow-lg">
+              <div className="w-8 h-8 rounded-lg bg-linear-to-br from-pink-500 to-brand-primary flex items-center justify-center shadow-lg">
                 <Sparkles className="w-4 h-4 text-white" />
               </div>
               <span className="font-display font-bold text-xl tracking-tight text-white">

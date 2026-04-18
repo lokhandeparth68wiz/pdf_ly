@@ -57,8 +57,8 @@ export function HeroSection() {
           </motion.p>
 
           <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-center gap-4 mb-20">
-            <Link href="#tools" className="relative group px-8 py-4 rounded-full font-medium text-white shadow-[0_0_40px_-10px_rgba(223,37,49,0.5)] hover:shadow-[0_0_60px_-15px_rgba(223,37,49,0.7)] transition-all duration-300 hover:scale-105 flex items-center gap-2">
-              <div className="absolute inset-0 rounded-full bg-linear-to-r from-brand-primary to-red-600 opacity-90 group-hover:opacity-100 transition-opacity" />
+            <Link href="#tools" className="relative group px-8 py-4 rounded-full font-medium text-white shadow-[0_0_40px_-10px_rgba(255,20,147,0.5)] hover:shadow-[0_0_60px_-15px_rgba(255,20,147,0.7)] transition-all duration-300 hover:scale-105 flex items-center gap-2">
+              <div className="absolute inset-0 rounded-full bg-linear-to-r from-brand-primary to-pink-500 opacity-90 group-hover:opacity-100 transition-opacity" />
               <span className="relative z-10">Start Using PDFly</span>
               <ArrowRight className="w-4 h-4 relative z-10 group-hover:translate-x-1 transition-transform" />
             </Link>

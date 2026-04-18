@@ -45,7 +45,7 @@ export function HowItWorksSection() {
     {
       title: "Upload File",
       description: "Drag & drop your PDF directly into the browser.",
-      icon: <Upload className="w-8 h-8 text-red-500" />
+      icon: <Upload className="w-8 h-8 text-pink-500" />
     },
     {
       title: "Choose Tool",
@@ -74,7 +74,7 @@ export function HowItWorksSection() {
                 ref={el => { stepsRef.current[idx] = el; }}
                 className="flex flex-col items-center"
               >
-                <div className="w-24 h-24 rounded-full glass-card flex items-center justify-center mb-6 relative group overflow-hidden shadow-[0_15px_35px_-10px_rgba(223,37,49,0.2)]">
+                <div className="w-24 h-24 rounded-full glass-card flex items-center justify-center mb-6 relative group overflow-hidden shadow-[0_15px_35px_-10px_rgba(255,20,147,0.2)]">
                   <div className="absolute inset-0 rounded-full bg-linear-to-b from-white/10 to-transparent group-hover:scale-110 transition-transform duration-500" />
                   {step.icon}
                   
@@ -92,7 +92,7 @@ export function HowItWorksSection() {
               {idx < steps.length - 1 && (
                 <div 
                   ref={el => { linesRef.current[idx] = el; }}
-                  className="hidden md:block absolute top-[48px] left-[60%] w-[80%] h-[2px] bg-linear-to-r from-red-500/50 to-brand-primary/50 -z-10" 
+                  className="hidden md:block absolute top-[48px] left-[60%] w-[80%] h-[2px] bg-linear-to-r from-pink-500/50 to-brand-primary/50 -z-10" 
                 >
                   {/* Moving dot on line */}
                   <div className="w-full h-full relative overflow-hidden">

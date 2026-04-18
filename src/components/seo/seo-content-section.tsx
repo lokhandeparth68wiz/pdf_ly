@@ -3,7 +3,7 @@ import Link from 'next/link';
 export function SeoContentSection() {
   return (
     <section className="w-full bg-black/40 backdrop-blur-md py-24 px-6 border-y border-white/5 relative z-10">
-      <div className="max-w-4xl mx-auto prose prose-invert prose-p:text-neutral-400 prose-headings:font-display prose-a:text-brand-primary hover:prose-a:text-red-400">
+      <div className="max-w-4xl mx-auto prose prose-invert prose-p:text-neutral-400 prose-headings:font-display prose-a:text-brand-primary hover:prose-a:text-pink-400">
         <h2 className="text-4xl font-bold mb-8 text-white text-center">Your Ultimate Free Online PDF Toolkit</h2>
         
         <p className="text-lg leading-relaxed mb-8">

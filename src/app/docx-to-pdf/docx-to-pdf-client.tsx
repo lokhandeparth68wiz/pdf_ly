@@ -12,6 +12,7 @@ export default function DocxToPdfClient({ hideHeader = false }: { hideHeader?: b
 
   const handleFilesDropped = (acceptedFiles: File[]) => {
     setFile(acceptedFiles[0]);
+    if (convertedUrl) URL.revokeObjectURL(convertedUrl);
     setConvertedUrl(null);
     setError(null);
   };
@@ -37,6 +38,7 @@ export default function DocxToPdfClient({ hideHeader = false }: { hideHeader?: b
       }
 
       const blob = await response.blob();
+      if (convertedUrl) URL.revokeObjectURL(convertedUrl);
       const url = URL.createObjectURL(blob);
       setConvertedUrl(url);
     } catch (error: unknown) {
@@ -52,14 +54,14 @@ export default function DocxToPdfClient({ hideHeader = false }: { hideHeader?: b
       {!hideHeader && (
         <div className="text-center mb-10">
           <div className="flex justify-center mb-4">
-            <div className="p-3 bg-rose-100 dark:bg-rose-900/30 rounded-2xl">
-              <FileType2 className="w-10 h-10 text-rose-600 dark:text-rose-400" />
+            <div className="p-3 bg-emerald-900/30 rounded-2xl border border-emerald-500/20 shadow-[0_0_20px_rgba(16,185,129,0.15)]">
+              <FileType2 className="w-10 h-10 text-emerald-400" />
             </div>
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold text-neutral-900 dark:text-white mb-4">
+          <h1 className="text-3xl md:text-4xl font-display font-bold text-white mb-4 drop-shadow-lg">
             Word to PDF
           </h1>
-          <p className="text-lg text-neutral-600 dark:text-neutral-400">
+          <p className="text-lg text-neutral-300 max-w-2xl mx-auto drop-shadow">
             Make DOCX files easy to read by converting them to PDF.
           </p>
         </div>
@@ -71,7 +73,7 @@ export default function DocxToPdfClient({ hideHeader = false }: { hideHeader?: b
             onFilesDropped={handleFilesDropped}
             accept={{ "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [".docx"], "application/msword": [".doc"] }}
             multiple={false}
-            theme="amber"
+            theme="emerald"
             description="Supported formats: DOCX, DOC. Up to 100MB per file."
           />
         )}
@@ -86,8 +88,8 @@ export default function DocxToPdfClient({ hideHeader = false }: { hideHeader?: b
           <div className="rounded-2xl p-6 md:p-8 glass-card border border-white/10">
             <div className="flex items-center justify-between mb-6 pb-4 border-b border-white/10">
               <div className="flex items-center space-x-4">
-                <div className="p-3 bg-amber-500/10 rounded-xl">
-                  <FileType2 className="w-8 h-8 text-amber-400" />
+                <div className="p-3 bg-emerald-500/10 rounded-xl border border-emerald-500/20">
+                  <FileType2 className="w-8 h-8 text-emerald-400" />
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-white truncate max-w-sm">
@@ -108,7 +110,7 @@ export default function DocxToPdfClient({ hideHeader = false }: { hideHeader?: b
               <button
                 onClick={handleConvert}
                 disabled={isConverting}
-                className="flex flex-1 md:flex-none items-center justify-center px-10 py-3 bg-amber-600 hover:bg-amber-500 disabled:opacity-50 disabled:cursor-not-allowed text-white text-lg font-medium rounded-xl shadow-lg transition-all"
+                className="flex flex-1 md:flex-none items-center justify-center px-10 py-3 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed text-white text-lg font-medium rounded-xl shadow-[0_0_15px_rgba(16,185,129,0.3)] transition-all border border-emerald-400/30"
               >
                 {isConverting ? (
                   <>
@@ -125,8 +127,8 @@ export default function DocxToPdfClient({ hideHeader = false }: { hideHeader?: b
 
         {convertedUrl && (
           <div className="rounded-2xl p-10 text-center glass-card border border-white/10">
-             <div className="inline-flex items-center justify-center w-16 h-16 bg-green-500/10 border border-green-500/20 rounded-full mb-6">
-                <span className="text-2xl font-bold text-green-400">✓</span>
+             <div className="inline-flex items-center justify-center w-16 h-16 bg-emerald-500/10 border border-emerald-500/20 rounded-full mb-6 shadow-[0_0_20px_rgba(16,185,129,0.2)]">
+                <span className="text-2xl font-bold text-emerald-400">✓</span>
              </div>
              <h2 className="text-2xl font-bold text-white mb-2">
                Conversion Successful!
@@ -139,17 +141,18 @@ export default function DocxToPdfClient({ hideHeader = false }: { hideHeader?: b
                 <button
                   onClick={() => {
                     setFile(null);
+                    if (convertedUrl) URL.revokeObjectURL(convertedUrl);
                     setConvertedUrl(null);
                     setError(null);
                   }}
-                  className="px-6 py-3 font-medium text-neutral-300 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl transition-colors w-full sm:w-auto"
+                  className="px-6 py-3 font-medium text-neutral-300 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl transition-colors w-full sm:w-auto glass-card"
                 >
                   Convert another file
                 </button>
                 <a
                   href={convertedUrl}
                   download={`converted-${file!.name.replace(/\.(docx|doc)$/i, "")}.pdf`}
-                  className="flex items-center justify-center px-8 py-3 bg-amber-600 hover:bg-amber-500 text-white font-medium rounded-xl shadow-lg transition-all w-full sm:w-auto"
+                  className="flex items-center justify-center px-8 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-medium rounded-xl shadow-[0_0_15px_rgba(16,185,129,0.3)] transition-all border border-emerald-400/30 w-full sm:w-auto"
                 >
                   <Download className="w-5 h-5 mr-2" />
                   Download PDF

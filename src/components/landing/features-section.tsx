@@ -56,8 +56,8 @@ export function FeaturesSection() {
               ref={el => { listRef.current[idx] = el; }}
               className="flex items-start gap-4 group"
             >
-              <div className="w-12 h-12 rounded-xl bg-linear-to-br from-red-500/20 to-brand-dark/50 border border-white/10 border-t-white/20 backdrop-blur-xl flex items-center justify-center shrink-0 group-hover:bg-red-500/30 group-hover:shadow-[0_8px_32px_rgba(223,37,49,0.25)] transition-all shadow-[inset_0_0_15px_rgba(255,255,255,0.05)]">
-                 <feat.icon className="w-6 h-6 text-red-500" />
+              <div className="w-12 h-12 rounded-xl bg-linear-to-br from-pink-500/20 to-brand-dark/50 border border-white/10 border-t-white/20 backdrop-blur-xl flex items-center justify-center shrink-0 group-hover:bg-pink-500/30 group-hover:shadow-[0_8px_32px_rgba(255,20,147,0.25)] transition-all shadow-[inset_0_0_15px_rgba(255,255,255,0.05)]">
+                 <feat.icon className="w-6 h-6 text-pink-500" />
               </div>
               <div>
                 <h4 className="text-xl font-bold text-white mb-2">{feat.title}</h4>
