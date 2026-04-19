@@ -19,6 +19,8 @@ interface ToolContentLayoutProps {
   seoContentBlocks: { title: string; content: string }[];
   toolUrl: string;
   children?: React.ReactNode;
+  accentColor?: string;
+  accentColorSecondary?: string;
 }
 
 export function ToolContentLayout({
@@ -30,7 +32,9 @@ export function ToolContentLayout({
   steps,
   seoContentBlocks,
   toolUrl,
-  children
+  children,
+  accentColor,
+  accentColorSecondary
 }: ToolContentLayoutProps) {
   return (
     <div className="relative w-full min-h-screen bg-brand-dark text-white flex flex-col font-sans overflow-x-hidden selection:bg-brand-primary/30 selection:text-white">
@@ -41,8 +45,8 @@ export function ToolContentLayout({
 
       {/* Global Cinematic Effects */}
       <div className="fixed inset-0 z-0 pointer-events-none">
-        <ParticleBackground />
-        <GradientMesh />
+        <ParticleBackground {...(accentColor ? { baseColor: accentColor, secondaryColor: accentColorSecondary || accentColor } : {})} />
+        <GradientMesh {...(accentColor ? { baseColor: accentColor, secondaryColor: accentColorSecondary || accentColor } : {})} />
         <NoiseTexture />
       </div>
 

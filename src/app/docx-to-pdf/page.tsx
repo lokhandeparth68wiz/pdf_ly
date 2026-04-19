@@ -48,6 +48,8 @@ export default function DocxToPdfPage() {
       faqs={faqs}
       steps={steps}
       seoContentBlocks={seoblocks}
+      accentColor="#10b981"
+      accentColorSecondary="#065f46"
     >
       <div className="w-full">
         <DocxToPdfClient hideHeader={true} />
