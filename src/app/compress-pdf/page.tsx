@@ -48,6 +48,8 @@ export default function CompressPdfPage() {
       faqs={faqs}
       steps={steps}
       seoContentBlocks={seoblocks}
+      accentColor="#f59e0b"
+      accentColorSecondary="#92400e"
     >
       <div className="w-full">
         <CompressClient hideHeader={true} />

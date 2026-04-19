@@ -48,6 +48,8 @@ export default function MergePdfPage() {
       faqs={faqs}
       steps={steps}
       seoContentBlocks={seoblocks}
+      accentColor="#3b82f6"
+      accentColorSecondary="#1e3a8a"
     >
       <div className="w-full">
         <MergeClient hideHeader={true} />

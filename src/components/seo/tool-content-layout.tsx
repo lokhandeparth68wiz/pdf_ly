@@ -75,7 +75,11 @@ export function ToolContentLayout({
                     <UploadCloud className="w-8 h-8 text-neutral-500" />
                   </div>
                   <p>Drag and drop your PDF here</p>
-                  <Link href={toolUrl} className="px-8 py-4 rounded-full font-medium text-white bg-brand-primary shadow-[0_0_30px_-10px_rgba(223,37,49,0.5)] hover:shadow-[0_0_50px_-10px_rgba(223,37,49,0.8)] transition-all">
+                  <Link 
+                    href={toolUrl} 
+                    className={`px-8 py-4 rounded-full font-medium text-white transition-all ${!accentColor ? 'bg-brand-primary shadow-[0_0_30px_-10px_rgba(223,37,49,0.5)] hover:shadow-[0_0_50px_-10px_rgba(223,37,49,0.8)]' : ''}`}
+                    style={accentColor ? { backgroundColor: accentColor, boxShadow: `0 0 30px -10px ${accentColor}80` } : undefined}
+                  >
                     {actionButtonText}
                   </Link>
                 </div>
@@ -89,7 +93,10 @@ export function ToolContentLayout({
           <div className="grid md:grid-cols-3 gap-8">
             {steps.map((step, idx) => (
               <div key={idx} className="bg-white/5 border border-white/10 rounded-xl p-6">
-                <div className="w-10 h-10 rounded-full bg-brand-primary/20 text-brand-primary flex items-center justify-center font-bold mb-4">
+                <div 
+                  className={`w-10 h-10 rounded-full flex items-center justify-center font-bold mb-4 ${!accentColor ? 'bg-brand-primary/20 text-brand-primary' : ''}`}
+                  style={accentColor ? { backgroundColor: `${accentColor}20`, color: accentColor } : undefined}
+                >
                   {idx + 1}
                 </div>
                 <h3 className="text-xl font-bold mb-2">{step.name}</h3>

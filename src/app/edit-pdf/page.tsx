@@ -48,6 +48,8 @@ export default function EditPdfPage() {
       faqs={faqs}
       steps={steps}
       seoContentBlocks={seoblocks}
+      accentColor="#d946ef"
+      accentColorSecondary="#86198f"
     >
       <div className="w-full">
         <PdfEditorClient hideHeader={true} />
