@@ -71,7 +71,7 @@ export function ToolContentLayout({
                     <UploadCloud className="w-8 h-8 text-neutral-500" />
                   </div>
                   <p>Drag and drop your PDF here</p>
-                  <Link href={toolUrl} className="px-8 py-4 rounded-full font-medium text-white bg-brand-primary shadow-[0_0_30px_-10px_rgba(255,20,147,0.5)] hover:shadow-[0_0_50px_-10px_rgba(255,20,147,0.8)] transition-all">
+                  <Link href={toolUrl} className="px-8 py-4 rounded-full font-medium text-white bg-brand-primary shadow-[0_0_30px_-10px_rgba(223,37,49,0.5)] hover:shadow-[0_0_50px_-10px_rgba(223,37,49,0.8)] transition-all">
                     {actionButtonText}
                   </Link>
                 </div>

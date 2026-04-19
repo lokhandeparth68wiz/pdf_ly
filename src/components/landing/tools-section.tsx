@@ -10,16 +10,16 @@ const tools = [
   {
     title: "Merge PDF",
     description: "Combine multiple PDFs into one unified document instantly.",
-    icon: <CopyPlus className="h-8 w-8 text-pink-400 group-hover:text-pink-300 transition-colors" />,
+    icon: <CopyPlus className="h-8 w-8 text-red-400 group-hover:text-red-300 transition-colors" />,
     href: "/merge",
-    gradient: "from-pink-600 to-brand-primary",
+    gradient: "from-red-600 to-brand-primary",
   },
   {
     title: "Edit PDF",
     description: "Add text, shapes, images, and freehand annotations securely.",
     icon: <FileEdit className="h-8 w-8 text-rose-400 group-hover:text-rose-300 transition-colors" />,
     href: "/edit",
-    gradient: "from-pink-600 to-pink-400",
+    gradient: "from-rose-600 to-red-500",
   },
   {
     title: "Compress PDF",
@@ -31,16 +31,16 @@ const tools = [
   {
     title: "PDF to DOCX",
     description: "Convert PDFs to editable Word documents with high accuracy.",
-    icon: <FileText className="h-8 w-8 text-pink-500 group-hover:text-pink-400 transition-colors" />,
+    icon: <FileText className="h-8 w-8 text-red-500 group-hover:text-red-400 transition-colors" />,
     href: "/pdf-to-docx",
-    gradient: "from-pink-600 to-pink-400",
+    gradient: "from-red-600 to-rose-500",
   },
   {
     title: "DOCX to PDF",
     description: "Make DOCX files easy to read by converting them to PDF.",
     icon: <FileType2 className="h-8 w-8 text-rose-500 group-hover:text-rose-400 transition-colors" />,
     href: "/docx-to-pdf",
-    gradient: "from-pink-500 to-pink-600",
+    gradient: "from-rose-600 to-red-600",
   },
 ];
 

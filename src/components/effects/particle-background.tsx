@@ -4,8 +4,8 @@ import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
 export function ParticleBackground({ 
-  baseColor = "#ff1493", 
-  secondaryColor = "#c71585" 
+  baseColor = "#df2531", 
+  secondaryColor = "#991b22" 
 }: { 
   baseColor?: string;
   secondaryColor?: string;
