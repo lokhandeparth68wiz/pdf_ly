@@ -30,10 +30,10 @@ export function ParticleBackground({
     const renderer = new THREE.WebGLRenderer({
       alpha: true,
       antialias: true,
-      powerPreference: "high-performance",
+      // Removed high-performance as it can cause WebGL context creation failure on some Android devices
     });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Allow up to 2x definition for crisper visuals on 144Hz setups
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2)); // Fix for undefined devicePixelRatio
     mountRef.current.appendChild(renderer.domElement);
 
     // Particles setup
@@ -72,6 +72,7 @@ export function ParticleBackground({
 
     // Custom shader material for soft glowing particles
     const material = new THREE.ShaderMaterial({
+      precision: "mediump", // Fix: Android devices often do not support highp in fragment shaders
       uniforms: {
         time: { value: 0 },
       },
@@ -88,7 +89,7 @@ export function ParticleBackground({
           pos.x += cos(time * 0.3 + position.y * 0.1) * 2.0;
           
           vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
-          gl_PointSize = size * (300.0 / -mvPosition.z);
+          gl_PointSize = max(1.0, size * (300.0 / -mvPosition.z)); // Prevent invisible particles < 1px
           gl_Position = projectionMatrix * mvPosition;
         }
       `,
