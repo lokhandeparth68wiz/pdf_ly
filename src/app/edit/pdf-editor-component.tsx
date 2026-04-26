@@ -7,7 +7,7 @@ import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
 import SignatureCanvas from "react-signature-canvas";
-import { PDFDocument, rgb } from "pdf-lib";
+import { PDFDocument, rgb, StandardFonts, PDFFont } from "pdf-lib";
 import { motion } from "framer-motion";
 
 // Initialize PDF.js worker safely for SSR
@@ -23,6 +23,8 @@ interface Annotation {
   width?: number; // for whiteout
   height?: number; // for whiteout
   content?: string;
+  fontSize?: number;
+  fontFamily?: string;
   dataUrl?: string; // For signature
   pageIndex: number;
 }
@@ -47,6 +49,12 @@ export default function PdfEditorClient({ hideHeader = false }: { hideHeader?: b
   const [isDrawingWhiteout, setIsDrawingWhiteout] = useState(false);
   const [currentWhiteout, setCurrentWhiteout] = useState<{x: number, y: number, w: number, h: number} | null>(null);
 
+  // Text Modal state
+  const [showTextModal, setShowTextModal] = useState(false);
+  const [textContent, setTextContent] = useState("");
+  const [textFontSize, setTextFontSize] = useState(24);
+  const [textFontFamily, setTextFontFamily] = useState("Helvetica");
+
   useEffect(() => {
     if (file) {
       const url = URL.createObjectURL(file);
@@ -59,18 +67,21 @@ export default function PdfEditorClient({ hideHeader = false }: { hideHeader?: b
     setNumPages(numPages);
   };
 
-  const addTextAnnotation = () => {
-    const text = prompt("Enter text to add:");
-    if (!text) return;
+  const confirmAddText = () => {
+    if (!textContent.trim()) return;
     
     setAnnotations([...annotations, {
       id: Date.now().toString(),
       type: "text",
-      content: text,
+      content: textContent,
+      fontSize: textFontSize,
+      fontFamily: textFontFamily,
       pageIndex: currentPage - 1,
       x: 100,
       y: 100,
     }]);
+    setShowTextModal(false);
+    setTextContent("");
     setTool(null);
   };
 
@@ -104,6 +115,16 @@ export default function PdfEditorClient({ hideHeader = false }: { hideHeader?: b
       const pdfDoc = await PDFDocument.load(arrayBuffer);
       const pages = pdfDoc.getPages();
 
+      const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
+      const timesRomanFont = await pdfDoc.embedFont(StandardFonts.TimesRoman);
+      const courierFont = await pdfDoc.embedFont(StandardFonts.Courier);
+      
+      const fontMap: Record<string, PDFFont> = {
+        "Helvetica": helveticaFont,
+        "Times Roman": timesRomanFont,
+        "Courier": courierFont,
+      };
+
       const renderedPageElement = containerRef.current?.querySelector('.react-pdf__Page');
       const renderedWidth = renderedPageElement ? renderedPageElement.clientWidth : 600;
       const renderedHeight = renderedPageElement ? renderedPageElement.clientHeight : 800;
@@ -128,10 +149,13 @@ export default function PdfEditorClient({ hideHeader = false }: { hideHeader?: b
             color: rgb(1, 1, 1),
           });
         } else if (ann.type === "text" && ann.content) {
+          const fontSize = ann.fontSize || 24;
+          const font = fontMap[ann.fontFamily || "Helvetica"] || helveticaFont;
           page.drawText(ann.content, {
             x: pdfX,
-            y: pdfY - (24 * scaleY), // adjust for font baseline
-            size: 24 * scaleY,
+            y: pdfY - (fontSize * scaleY), // adjust for font baseline
+            size: fontSize * scaleY,
+            font: font,
             color: rgb(0, 0, 0),
           });
         } else if (ann.type === "signature" && ann.dataUrl) {
@@ -207,7 +231,7 @@ export default function PdfEditorClient({ hideHeader = false }: { hideHeader?: b
             
             <div className="flex items-center gap-3">
               <button
-                onClick={addTextAnnotation}
+                onClick={() => setShowTextModal(true)}
                 className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-xl transition-all border ${
                   tool === "text" ? "border-fuchsia-500 bg-fuchsia-500/10 text-fuchsia-400" : "border-white/10 bg-white/5 text-neutral-300 hover:bg-white/10 hover:text-white"
                 }`}
@@ -356,7 +380,15 @@ export default function PdfEditorClient({ hideHeader = false }: { hideHeader?: b
                            <X className="w-3 h-3" />
                          </button>
                         {ann.type === "text" && (
-                          <div className="text-2xl font-sans text-black whitespace-nowrap bg-white/50 px-1 border border-transparent group-hover:border-blue-500 leading-none">
+                          <div 
+                            className="font-sans text-black whitespace-pre-wrap bg-white/50 px-1 border border-transparent group-hover:border-blue-500 leading-none"
+                            style={{ 
+                              fontSize: `${ann.fontSize || 24}px`,
+                              fontFamily: ann.fontFamily === 'Times Roman' ? '"Times New Roman", Times, serif' : 
+                                          ann.fontFamily === 'Courier' ? 'Courier, monospace' : 
+                                          'Arial, Helvetica, sans-serif'
+                            }}
+                          >
                             {ann.content}
                           </div>
                         )}
@@ -407,6 +439,69 @@ export default function PdfEditorClient({ hideHeader = false }: { hideHeader?: b
                 className="px-6 py-3 bg-fuchsia-600 hover:bg-fuchsia-500 border border-fuchsia-400/30 shadow-[0_0_15px_rgba(217,70,239,0.3)] text-white font-medium rounded-xl transition-all"
               >
                 Save Signature
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Text Modal */}
+      {showTextModal && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4">
+          <div className="glass-card bg-black/70 rounded-3xl p-8 w-full max-w-md shadow-[0_0_40px_rgba(0,0,0,0.5)] border border-white/10 relative">
+            <h3 className="text-xl font-bold mb-6 text-white text-center">Add Text</h3>
+            
+            <div className="flex flex-col gap-4 mb-6">
+              <div>
+                <label className="block text-sm font-medium text-neutral-300 mb-1">Text Content</label>
+                <textarea 
+                  value={textContent}
+                  onChange={(e) => setTextContent(e.target.value)}
+                  className="w-full bg-white/10 border border-white/20 rounded-xl p-3 text-white focus:outline-none focus:border-fuchsia-500 focus:ring-1 focus:ring-fuchsia-500 resize-none h-24"
+                  placeholder="Type your text here..."
+                  autoFocus
+                />
+              </div>
+              
+              <div className="flex gap-4">
+                <div className="flex-1">
+                  <label className="block text-sm font-medium text-neutral-300 mb-1">Font Family</label>
+                  <select
+                    value={textFontFamily}
+                    onChange={(e) => setTextFontFamily(e.target.value)}
+                    className="w-full bg-white/10 border border-white/20 rounded-xl p-3 text-white focus:outline-none focus:border-fuchsia-500 appearance-none"
+                  >
+                    <option value="Helvetica" className="text-black">Helvetica</option>
+                    <option value="Times Roman" className="text-black">Times Roman</option>
+                    <option value="Courier" className="text-black">Courier</option>
+                  </select>
+                </div>
+                <div className="w-24">
+                  <label className="block text-sm font-medium text-neutral-300 mb-1">Size</label>
+                  <input 
+                    type="number"
+                    value={textFontSize}
+                    onChange={(e) => setTextFontSize(Number(e.target.value))}
+                    className="w-full bg-white/10 border border-white/20 rounded-xl p-3 text-white focus:outline-none focus:border-fuchsia-500"
+                    min="8"
+                    max="144"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-4">
+              <button 
+                onClick={() => setShowTextModal(false)}
+                className="px-6 py-3 font-medium text-neutral-300 hover:text-white glass-card bg-white/5 border border-white/10 hover:bg-white/10 rounded-xl transition-all"
+              >
+                Cancel
+              </button>
+              <button 
+                onClick={confirmAddText}
+                className="px-6 py-3 bg-fuchsia-600 hover:bg-fuchsia-500 border border-fuchsia-400/30 shadow-[0_0_15px_rgba(217,70,239,0.3)] text-white font-medium rounded-xl transition-all"
+              >
+                Add Text
               </button>
             </div>
           </div>
