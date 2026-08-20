@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import { Download, Type, PenTool, X, Undo2, FileEdit, Eraser } from "lucide-react";
+import { useState, useRef, useEffect, useCallback } from "react";
+import { Download, Type, PenTool, X, Undo2, FileEdit, Eraser, MousePointerClick, Loader2 } from "lucide-react";
 import { FileDropzone } from "@/components/file-dropzone";
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
@@ -29,6 +29,26 @@ interface Annotation {
   pageIndex: number;
 }
 
+// Extracted text item from pdfjs
+interface ExtractedTextItem {
+  id: string;
+  str: string;              // original text
+  x: number;                // screen x (top-left origin)
+  y: number;                // screen y
+  width: number;            // rendered width px
+  height: number;           // rendered height px
+  fontSize: number;         // screen font size px
+  fontName: string;         // pdfjs internal font name
+  transform: number[];      // raw PDF transform [a,b,c,d,tx,ty]
+  pageIndex: number;
+}
+
+// Tracks a user edit to an extracted text item
+interface TextEdit {
+  itemId: string;
+  newContent: string;
+}
+
 export default function PdfEditorClient({ hideHeader = false }: { hideHeader?: boolean } = {}) {
   const [file, setFile] = useState<File | null>(null);
   const [fileUrl, setFileUrl] = useState<string | null>(null);
@@ -36,7 +56,7 @@ export default function PdfEditorClient({ hideHeader = false }: { hideHeader?: b
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [renderScale] = useState<number>(1);
   
-  const [tool, setTool] = useState<"text" | "draw" | "whiteout" | null>(null);
+  const [tool, setTool] = useState<"text" | "draw" | "whiteout" | "editText" | null>(null);
   const [annotations, setAnnotations] = useState<Annotation[]>([]);
   
   const [showSignaturePad, setShowSignaturePad] = useState(false);
@@ -55,6 +75,12 @@ export default function PdfEditorClient({ hideHeader = false }: { hideHeader?: b
   const [textFontSize, setTextFontSize] = useState(24);
   const [textFontFamily, setTextFontFamily] = useState("Helvetica");
 
+  // Edit existing text state
+  const [extractedText, setExtractedText] = useState<ExtractedTextItem[]>([]);
+  const [textEdits, setTextEdits] = useState<TextEdit[]>([]);
+  const [editingItemId, setEditingItemId] = useState<string | null>(null);
+  const [isExtractingText, setIsExtractingText] = useState(false);
+
   useEffect(() => {
     if (file) {
       const url = URL.createObjectURL(file);
@@ -65,6 +91,80 @@ export default function PdfEditorClient({ hideHeader = false }: { hideHeader?: b
 
   const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
     setNumPages(numPages);
+  };
+
+  // Extract text from all pages when PDF is loaded
+  const extractTextFromPdf = useCallback(async (url: string, totalPages: number) => {
+    setIsExtractingText(true);
+    try {
+      const pdf = await pdfjs.getDocument(url).promise;
+      const allItems: ExtractedTextItem[] = [];
+
+      for (let i = 0; i < totalPages; i++) {
+        const page = await pdf.getPage(i + 1);
+        const baseViewport = page.getViewport({ scale: 1 });
+        const viewport = page.getViewport({ scale: renderScale });
+        const textContent = await page.getTextContent();
+        const scaleRatio = viewport.width / baseViewport.width;
+
+        for (const item of textContent.items) {
+          if (!('str' in item) || !item.str.trim()) continue;
+
+          const tx = item.transform;
+          // tx = [scaleX, skewX, skewY, scaleY, translateX, translateY]
+          const pdfFontSize = Math.abs(tx[3]);
+          const screenFontSize = pdfFontSize * scaleRatio;
+
+          // Convert PDF coords (bottom-left origin) to screen coords (top-left)
+          const screenX = tx[4] * scaleRatio;
+          const screenY = viewport.height - (tx[5] * scaleRatio) - screenFontSize;
+
+          const screenWidth = ('width' in item ? (item as { width: number }).width : 0) * scaleRatio;
+
+          allItems.push({
+            id: `et-${i}-${allItems.length}`,
+            str: item.str,
+            x: screenX,
+            y: screenY,
+            width: screenWidth || (item.str.length * screenFontSize * 0.6),
+            height: screenFontSize * 1.3,
+            fontSize: screenFontSize,
+            fontName: ('fontName' in item ? (item as { fontName: string }).fontName : ''),
+            transform: tx,
+            pageIndex: i,
+          });
+        }
+      }
+
+      setExtractedText(allItems);
+    } catch (err) {
+      console.error("Failed to extract text:", err);
+    } finally {
+      setIsExtractingText(false);
+    }
+  }, [renderScale]);
+
+  // Trigger text extraction when file loads
+  useEffect(() => {
+    if (fileUrl && numPages > 0) {
+      extractTextFromPdf(fileUrl, numPages);
+    }
+  }, [fileUrl, numPages, extractTextFromPdf]);
+
+  // Update or create a text edit entry
+  const updateTextEdit = (itemId: string, newContent: string) => {
+    setTextEdits(prev => {
+      const existing = prev.find(e => e.itemId === itemId);
+      // If text is reverted to original, remove the edit
+      const original = extractedText.find(t => t.id === itemId);
+      if (original && newContent === original.str) {
+        return prev.filter(e => e.itemId !== itemId);
+      }
+      if (existing) {
+        return prev.map(e => e.itemId === itemId ? { ...e, newContent } : e);
+      }
+      return [...prev, { itemId, newContent }];
+    });
   };
 
   const confirmAddText = () => {
@@ -128,6 +228,38 @@ export default function PdfEditorClient({ hideHeader = false }: { hideHeader?: b
       const renderedPageElement = containerRef.current?.querySelector('.react-pdf__Page');
       const renderedWidth = renderedPageElement ? renderedPageElement.clientWidth : 600;
       const renderedHeight = renderedPageElement ? renderedPageElement.clientHeight : 800;
+
+      // Apply text edits (whiteout original + redraw new text)
+      for (const edit of textEdits) {
+        const item = extractedText.find(t => t.id === edit.itemId);
+        if (!item || item.pageIndex >= pages.length) continue;
+
+        const page = pages[item.pageIndex];
+        const { width: pdfWidth, height: pdfHeight } = page.getSize();
+        const scaleX = pdfWidth / renderedWidth;
+        const scaleY = pdfHeight / renderedHeight;
+
+        // Whiteout the original text
+        const pdfX = item.x * scaleX;
+        const pdfY = pdfHeight - ((item.y + item.height) * scaleY);
+        page.drawRectangle({
+          x: pdfX - 1,
+          y: pdfY - 1,
+          width: (item.width * scaleX) + 2,
+          height: (item.height * scaleY) + 2,
+          color: rgb(1, 1, 1),
+        });
+
+        // Redraw with the user's new text
+        const editFontSize = item.fontSize * scaleY;
+        page.drawText(edit.newContent, {
+          x: pdfX,
+          y: pdfY + 2,
+          size: editFontSize,
+          font: helveticaFont,
+          color: rgb(0, 0, 0),
+        });
+      }
 
       for (const ann of annotations) {
         if (ann.pageIndex >= pages.length) continue;
@@ -254,6 +386,20 @@ export default function PdfEditorClient({ hideHeader = false }: { hideHeader?: b
               >
                 <Eraser className="w-4 h-4" /> Whiteout
               </button>
+              <button
+                onClick={() => setTool(tool === "editText" ? null : "editText")}
+                className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-xl transition-all border ${
+                  tool === "editText" ? "border-emerald-500 bg-emerald-500/10 text-emerald-400" : "border-white/10 bg-white/5 text-neutral-300 hover:bg-white/10 hover:text-white"
+                }`}
+              >
+                <MousePointerClick className="w-4 h-4" /> Edit Text
+                {isExtractingText && <Loader2 className="w-3 h-3 animate-spin" />}
+              </button>
+              {textEdits.length > 0 && (
+                <span className="text-xs bg-yellow-500/20 text-yellow-400 px-2 py-1 rounded-full border border-yellow-400/30">
+                  {textEdits.length} edit{textEdits.length > 1 ? 's' : ''}
+                </span>
+              )}
             </div>
 
             <div className="flex items-center gap-6">
@@ -289,7 +435,7 @@ export default function PdfEditorClient({ hideHeader = false }: { hideHeader?: b
             {fileUrl && (
               <div 
                 ref={containerRef}
-                className={`relative shadow-xl bg-white transition-all transform-gpu ${tool === 'whiteout' ? 'cursor-crosshair' : ''}`}
+                className={`relative shadow-xl bg-white transition-all transform-gpu ${tool === 'whiteout' ? 'cursor-crosshair' : ''} ${tool === 'editText' ? 'cursor-text' : ''}`}
                 style={{ minHeight: "800px", minWidth: "600px", touchAction: "none" }}
                 onPointerDown={(e) => {
                   if (tool !== "whiteout" || !containerRef.current) return;
@@ -402,6 +548,68 @@ export default function PdfEditorClient({ hideHeader = false }: { hideHeader?: b
                       </motion.div>
                     ))}
                   </div>
+
+                  {/* Edit Existing Text Overlay */}
+                  {tool === "editText" && (
+                    <div className="absolute inset-0 overflow-hidden" style={{ zIndex: 5 }}>
+                      {extractedText
+                        .filter(item => item.pageIndex === currentPage - 1)
+                        .map(item => {
+                          const edit = textEdits.find(e => e.itemId === item.id);
+                          const isEditing = editingItemId === item.id;
+                          const displayText = edit?.newContent ?? item.str;
+
+                          return (
+                            <div
+                              key={item.id}
+                              className="absolute"
+                              style={{
+                                left: item.x,
+                                top: item.y,
+                                width: isEditing ? 'auto' : item.width,
+                                minWidth: item.width,
+                                height: item.height,
+                              }}
+                            >
+                              {isEditing ? (
+                                <input
+                                  autoFocus
+                                  value={displayText}
+                                  onChange={(e) => updateTextEdit(item.id, e.target.value)}
+                                  onBlur={() => setEditingItemId(null)}
+                                  onKeyDown={(e) => {
+                                    if (e.key === 'Enter') setEditingItemId(null);
+                                    if (e.key === 'Escape') {
+                                      // Revert this edit
+                                      setTextEdits(prev => prev.filter(te => te.itemId !== item.id));
+                                      setEditingItemId(null);
+                                    }
+                                  }}
+                                  className="bg-white border-2 border-blue-500 text-black px-0.5 outline-none rounded-sm shadow-lg"
+                                  style={{
+                                    fontSize: item.fontSize,
+                                    lineHeight: `${item.height}px`,
+                                    height: item.height,
+                                    minWidth: item.width,
+                                    fontFamily: 'Arial, Helvetica, sans-serif',
+                                  }}
+                                />
+                              ) : (
+                                <div
+                                  onClick={() => setEditingItemId(item.id)}
+                                  className={`h-full w-full cursor-text transition-all rounded-sm ${
+                                    edit
+                                      ? 'bg-yellow-300/30 ring-1 ring-yellow-400/60 hover:bg-yellow-300/40'
+                                      : 'hover:bg-blue-200/25 hover:ring-1 hover:ring-blue-400/40'
+                                  }`}
+                                  title={edit ? `Edited: "${item.str}" → "${edit.newContent}"` : `Click to edit: "${item.str}"`}
+                                />
+                              )}
+                            </div>
+                          );
+                        })}
+                    </div>
+                  )}
 
                 </Document>
               </div>
