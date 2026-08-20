@@ -7,7 +7,8 @@ import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
 import SignatureCanvas from "react-signature-canvas";
-import { PDFDocument, rgb, StandardFonts, PDFFont } from "pdf-lib";
+import { PDFDocument, rgb, StandardFonts } from "pdf-lib";
+import type { PDFFont } from "pdf-lib";
 import { motion } from "framer-motion";
 
 // Initialize PDF.js worker safely for SSR
@@ -107,10 +108,13 @@ export default function PdfEditorClient({ hideHeader = false }: { hideHeader?: b
         const textContent = await page.getTextContent();
         const scaleRatio = viewport.width / baseViewport.width;
 
-        for (const item of textContent.items) {
-          if (!('str' in item) || !item.str.trim()) continue;
+        for (const rawItem of textContent.items) {
+          // pdfjs returns TextItem | TextMarkedContent — we only want TextItem
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const item = rawItem as any;
+          if (!item.str || !String(item.str).trim()) continue;
 
-          const tx = item.transform;
+          const tx: number[] = item.transform || [1, 0, 0, 1, 0, 0];
           // tx = [scaleX, skewX, skewY, scaleY, translateX, translateY]
           const pdfFontSize = Math.abs(tx[3]);
           const screenFontSize = pdfFontSize * scaleRatio;
@@ -119,17 +123,17 @@ export default function PdfEditorClient({ hideHeader = false }: { hideHeader?: b
           const screenX = tx[4] * scaleRatio;
           const screenY = viewport.height - (tx[5] * scaleRatio) - screenFontSize;
 
-          const screenWidth = ('width' in item ? (item as { width: number }).width : 0) * scaleRatio;
+          const screenWidth = (item.width || 0) * scaleRatio;
 
           allItems.push({
             id: `et-${i}-${allItems.length}`,
-            str: item.str,
+            str: String(item.str),
             x: screenX,
             y: screenY,
-            width: screenWidth || (item.str.length * screenFontSize * 0.6),
+            width: screenWidth || (String(item.str).length * screenFontSize * 0.6),
             height: screenFontSize * 1.3,
             fontSize: screenFontSize,
-            fontName: ('fontName' in item ? (item as { fontName: string }).fontName : ''),
+            fontName: item.fontName || '',
             transform: tx,
             pageIndex: i,
           });
